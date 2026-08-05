@@ -1,0 +1,57 @@
+[
+  {
+    "Id": "Unit_01",
+    "Name": "검사",
+    "Hp": 30,
+    "Attack": 5,
+    "AttackInterval": 1,
+    "Range": 1,
+    "MoveSpeed": 1,
+    "PlacementType": "Melee",
+    "LifeTime": 0
+  },
+  {
+    "Id": "Unit_02",
+    "Name": "궁수",
+    "Hp": 15,
+    "Attack": 8,
+    "AttackInterval": 1.5,
+    "Range": 5,
+    "MoveSpeed": 1,
+    "PlacementType": "Ranged",
+    "LifeTime": 0
+  },
+  {
+    "Id": "Unit_03",
+    "Name": "바리케이드",
+    "Hp": 100,
+    "Attack": 0,
+    "AttackInterval": 0,
+    "Range": 0,
+    "MoveSpeed": 0,
+    "PlacementType": "Structure",
+    "LifeTime": 0
+  },
+  {
+    "Id": "Unit_04",
+    "Name": "방어벽",
+    "Hp": 250,
+    "Attack": 0,
+    "AttackInterval": 0,
+    "Range": 3,
+    "MoveSpeed": 0,
+    "PlacementType": "Structure",
+    "LifeTime": 0
+  },
+  {
+    "Id": "Unit_05",
+    "Name": "왕성회복",
+    "Hp": 0,
+    "Attack": 0,
+    "AttackInterval": 0,
+    "Range": 0,
+    "MoveSpeed": 0,
+    "PlacementType": "Heal",
+    "LifeTime": 0
+  }
+]

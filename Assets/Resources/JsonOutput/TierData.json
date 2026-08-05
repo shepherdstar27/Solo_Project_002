@@ -1,0 +1,32 @@
+[
+  {
+    "Id": "Tier_01",
+    "SizeValue": 1,
+    "PromoteScore": 0,
+    "SummonUnitId": "Unit_01"
+  },
+  {
+    "Id": "Tier_02",
+    "SizeValue": 2,
+    "PromoteScore": 15,
+    "SummonUnitId": "Unit_02"
+  },
+  {
+    "Id": "Tier_03",
+    "SizeValue": 4,
+    "PromoteScore": 50,
+    "SummonUnitId": "Unit_03"
+  },
+  {
+    "Id": "Tier_04",
+    "SizeValue": 8,
+    "PromoteScore": 140,
+    "SummonUnitId": "Unit_04"
+  },
+  {
+    "Id": "Tier_05",
+    "SizeValue": 16,
+    "PromoteScore": 350,
+    "SummonUnitId": "Unit_05"
+  }
+]

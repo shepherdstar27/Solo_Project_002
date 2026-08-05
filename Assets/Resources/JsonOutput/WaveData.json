@@ -1,0 +1,23 @@
+[
+  {
+    "Id": "Wave_01_01",
+    "SpawnTime": 10,
+    "MonsterIds": "[“Monster_01”]",
+    "MonsterCounts": "[3]",
+    "SpawnInterval": 1
+  },
+  {
+    "Id": "Wave_01_02",
+    "SpawnTime": 60,
+    "MonsterIds": "[“Monster_01”]",
+    "MonsterCounts": "[3]",
+    "SpawnInterval": 1
+  },
+  {
+    "Id": "Wave_01_03",
+    "SpawnTime": 95,
+    "MonsterIds": "[“Monster_01”]",
+    "MonsterCounts": "[3]",
+    "SpawnInterval": 0.8
+  }
+]

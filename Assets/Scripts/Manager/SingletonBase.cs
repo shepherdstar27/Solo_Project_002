@@ -1,16 +1,38 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class SingletonBase : MonoBehaviour
+public class SingletonBase<T> : MonoBehaviour where T : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private static T _instance;
+
+    public static T Instance
     {
-        
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<T>();
+            }
+            return _instance;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    protected virtual void Awake()
     {
-        
+        if (_instance != null && _instance != this as T)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _instance = this as T;
+
+        if (transform.parent == null)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(transform.root.gameObject);
+        }
     }
 }

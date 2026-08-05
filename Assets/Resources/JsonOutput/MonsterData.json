@@ -1,0 +1,42 @@
+[
+  {
+    "Id": "Monster_01",
+    "Name": "근접몬스터",
+    "Hp": 20,
+    "Attack": 5,
+    "AttackInterval": 1,
+    "Range": 1,
+    "MoveSpeed": 1,
+    "Type": "Melee"
+  },
+  {
+    "Id": "Monster_02",
+    "Name": "원거리몬스터",
+    "Hp": 12,
+    "Attack": 6,
+    "AttackInterval": 2,
+    "Range": 4,
+    "MoveSpeed": 0.8,
+    "Type": "Ranged"
+  },
+  {
+    "Id": "Monster_03",
+    "Name": "돌진몬스터",
+    "Hp": 35,
+    "Attack": 10,
+    "AttackInterval": 1,
+    "Range": 1,
+    "MoveSpeed": 2,
+    "Type": "Rush"
+  },
+  {
+    "Id": "Monster_04",
+    "Name": "보스",
+    "Hp": 300,
+    "Attack": 25,
+    "AttackInterval": 2,
+    "Range": 1.5,
+    "MoveSpeed": 0.5,
+    "Type": "Boss"
+  }
+]
