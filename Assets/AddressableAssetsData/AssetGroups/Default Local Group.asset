@@ -14,7 +14,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
   m_GroupName: Default Local Group
   m_GUID: 9f0fc5468c7ed2c4db754f443a62036d
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 230e00abe24ef6a4bb612d56f4a327db
+    m_Address: Truck
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 254af849dc4920c45a47227be4e9084e
+    m_Address: Environment
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 816400beb4be71f498c154c74568a25d
+    m_Address: Canvas_InGame
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a255d115e4b6c4948903faac0678d532
+    m_Address: Managers
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae3c126379a2b1e4bbdb57a865484064
+    m_Address: TargetSpawner
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7a269ca076801e4b9f21436aa1fb10e
+    m_Address: AbsorbTarget
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 62876aa5bf00df147924e45655d3c4c7, type: 2}
   m_SchemaSet:

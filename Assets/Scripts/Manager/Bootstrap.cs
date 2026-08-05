@@ -20,15 +20,7 @@ public class Bootstrap : MonoBehaviour
         }
 
         GameDataManager.Instance.LoadAllData();
+        await StageLoader.Instance.LoadStageAsync();
 
-
-        // 파이프라인 검증용 테스트 조회 (확인 후 삭제 예정)
-        TierData tier1 = GameDataManager.Instance.GetData<TierData>("Tier_01");
-        if (tier1 != null)
-        {
-            Debug.Log($"[Bootstrap] 검증: {tier1.Id} / SizeValue {tier1.SizeValue} / 소환 유닛 {tier1.SummonUnitId}");
-        }
-
-        Debug.Log("[Bootstrap] 초기화 완료");
     }
 }
