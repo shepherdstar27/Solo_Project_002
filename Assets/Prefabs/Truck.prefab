@@ -31,7 +31,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8892853752491230181}
   m_Father: {fileID: 1448515058161384119}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7807547866307600007
@@ -138,13 +139,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5892116094845412652}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.75}
+  m_LocalScale: {x: 0.8333333, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8972112390679747678}
-  m_Father: {fileID: 1448515058161384119}
+  m_Father: {fileID: 27446976772466972}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &7278793210721650773
 BoxCollider:
@@ -191,6 +192,7 @@ GameObject:
   - component: {fileID: 8534711174935722806}
   - component: {fileID: 504666632113122101}
   - component: {fileID: 3747194091558922385}
+  - component: {fileID: 4011965756816930334}
   m_Layer: 0
   m_Name: Truck
   m_TagString: Untagged
@@ -212,7 +214,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 27446976772466972}
-  - {fileID: 8892853752491230181}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8534711174935722806
@@ -239,9 +240,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c56a9f1537259ef4a8361f444f95825a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TruckController
-  _moveSpeed: 8
+  _maxSpeed: 14
+  _minSpeed: 0
+  _accelRate: 9
+  _naturalDecelRate: 4
+  _brakeRate: 12
   _rotateSpeedDegree: 180
   _rotatePenaltyPerTier: 0.06
+  _bounceSpeedRatio: 0.3
 --- !u!54 &3747194091558922385
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -264,11 +270,25 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &4011965756816930334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6795830530937144315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e303a45321ea4b46b0e02ab854e571d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TruckInput
+  _mouseSensitivity: 3
+  _isCursorLocked: 1
 --- !u!1 &8919227245850250913
 GameObject:
   m_ObjectHideFlags: 0

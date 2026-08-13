@@ -319,7 +319,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68863dfc17cd56945ad87ef47e5d9bb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
-  _baseOffset: {x: 0, y: 14, z: -11}
+  _baseDistance: 11
+  _baseHeight: 6
+  _lookAtHeightOffset: 2
   _followSmoothTime: 0.25
   _zoomPerTier: 0.4
   _maxZoomMultiplier: 2.6

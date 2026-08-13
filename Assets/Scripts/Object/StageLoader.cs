@@ -14,15 +14,16 @@ public class StageLoader : SingletonBase<StageLoader>
         GameObject truck = await Addressables.InstantiateAsync("Truck").ToUniTask();
         TruckStatus status = truck.GetComponent<TruckStatus>();
         TruckController controller = truck.GetComponent<TruckController>();
+        TruckInput input = truck.GetComponent<TruckInput>();
 
         status.Initialize();
-        controller.SetJoystick(joystick);
 
         // 3. 카메라 연결 (Main Camera에 CameraFollow 부착 전제)
         CameraFollow cameraFollow = Camera.main.GetComponent<CameraFollow>();
         if (cameraFollow != null)
         {
-            cameraFollow.SetTarget(truck.transform, status);
+            cameraFollow.SetTarget(truck.transform, status, input);
+            controller.SetCamera(Camera.main.transform);
         }
         else
         {

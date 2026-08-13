@@ -2,26 +2,32 @@
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private Vector3 _baseOffset = new Vector3(0f, 14f, -11f);
-    [SerializeField] private float _followSmoothTime = 0.25f;
+    [SerializeField] private float _baseDistance = 11f;
+    [SerializeField] private float _baseHeight = 6f;
+    [SerializeField] private float _lookAtHeightOffset = 2f;
+    [SerializeField] private float _followSmoothTime = 0.05f;
     [SerializeField] private float _zoomPerTier = 0.4f;
     [SerializeField] private float _maxZoomMultiplier = 2.6f;
-    [SerializeField] private float _zoomLerpSpeed = 1.5f;   // 1~2초 보간
+    [SerializeField] private float _zoomLerpSpeed = 1.5f;
 
     private Transform _target;
     private TruckStatus _status;
+    private TruckInput _input;
+
+    private float _yaw;
     private float _currentZoom = 1f;
     private float _targetZoom = 1f;
     private Vector3 _velocity;
 
-    public void SetTarget(Transform target, TruckStatus status)
+    public void SetTarget(Transform target, TruckStatus status, TruckInput input)
     {
         _target = target;
         _status = status;
+        _input = input;
         _status.OnChangeTier += OnChangeTier;
 
-        transform.position = _target.position + _baseOffset;
-        transform.LookAt(_target.position);
+        _yaw = target.eulerAngles.y;
+        transform.position = CalculateDesiredPosition();
     }
 
     private void OnChangeTier(int tierNumber)
@@ -37,10 +43,25 @@ public class CameraFollow : MonoBehaviour
             return;
         }
 
+        if (_input != null)
+        {
+            _yaw += _input.MouseDeltaX;
+        }
+
         _currentZoom = Mathf.Lerp(_currentZoom, _targetZoom, _zoomLerpSpeed * Time.deltaTime);
 
-        Vector3 desiredPosition = _target.position + _baseOffset * _currentZoom;
-        transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref _velocity, _followSmoothTime);
+        Vector3 desiredPosition = CalculateDesiredPosition();
+        transform.position = desiredPosition;
+
+        Vector3 lookAtPoint = _target.position + Vector3.up * _lookAtHeightOffset;
+        transform.rotation = Quaternion.LookRotation(lookAtPoint - transform.position);
+    }
+
+    private Vector3 CalculateDesiredPosition()
+    {
+        Quaternion rotation = Quaternion.Euler(0f, _yaw, 0f);
+        Vector3 offset = rotation * new Vector3(0f, _baseHeight, -_baseDistance);
+        return _target.position + offset * _currentZoom;
     }
 
     private void OnDestroy()
