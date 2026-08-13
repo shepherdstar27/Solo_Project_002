@@ -14,15 +14,20 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
     private StageData _stage;
     private float _sessionTime;
     private bool _isRunning;
+    private int _transferCount;
 
     public LaneSimulation Simulation { get { return _simulation; } }
     public DefenseGate Gate { get { return _gate; } }
     public WaveSpawner Spawner { get { return _waveSpawner; } }
 
+    public event Action<bool, int> OnFinishSession;   // 클리어 여부, 별 개수
+
     public event Action<float, float> OnChangeSessionTime;   // 경과, 제한
 
     public void StartSession(string stageId)
     {
+        _transferCount = 0;
+
         _stage = GameDataManager.Instance.GetData<StageData>(stageId);
         if (_stage == null)
         {
@@ -56,6 +61,8 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
             return;
         }
 
+        _transferCount++;
+
         if (_converter.IsHealType(unitDataId))
         {
             _gate.Heal(_gate.MaxHp * 0.25f, _gate.MaxHp * 0.1f);
@@ -70,6 +77,11 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
         }
 
         _simulation.AddEntity(unit);
+    }
+
+    public int GetTransferCount()
+    {
+        return _transferCount;
     }
 
     private void Update()
@@ -111,8 +123,34 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
         }
         _isRunning = false;
 
+        int star = CalculateStar(isClear);
         GameManager.Instance.EndGame(isClear);
-        Debug.Log($"[DefenseSessionManager] 세션 종료 / 클리어: {isClear} / 남은 게이트 HP {_gate.Hp}");
+
+        if (OnFinishSession != null)
+        {
+            OnFinishSession.Invoke(isClear, star);
+        }
+
+        Debug.Log($"[DefenseSessionManager] 세션 종료 / 클리어 {isClear} / 별 {star} / 전송 {_transferCount}건");
+    }
+
+    private int CalculateStar(bool isClear)
+    {
+        if (isClear == false)
+        {
+            return 0;
+        }
+
+        float ratio = _gate.GetHpRatio();
+        if (ratio >= 0.8f)
+        {
+            return 3;
+        }
+        if (ratio >= 0.4f)
+        {
+            return 2;
+        }
+        return 1;
     }
 
     private void OnDestroy()
@@ -122,4 +160,9 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
             _gate.OnBreakGate -= OnBreakGate;
         }
     }
+
+
+
+
+
 }

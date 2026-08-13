@@ -960,9 +960,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Panel_JoystickArea
       objectReference: {fileID: 0}
+    - target: {fileID: 1812121582656042988, guid: 4c7610628d1055d48a0f3bf4b52fe7ba, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5071019137083984568, guid: 4c7610628d1055d48a0f3bf4b52fe7ba, type: 3}
       propertyPath: m_Color.a
-      value: 0.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6017826960718731378, guid: 4c7610628d1055d48a0f3bf4b52fe7ba, type: 3}
       propertyPath: m_Pivot.x

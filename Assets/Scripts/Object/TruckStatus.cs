@@ -70,6 +70,8 @@ public class TruckStatus : MonoBehaviour
             _tierIndex++;
             ApplyTier();
 
+            Debug.Log($"[밸런스] 티어 {CurrentTierNumber} 도달 / 경과 {Time.timeSinceLevelLoad:F1}초 / 누적 {_currentScore}점");
+
             if (OnChangeTier != null)
             {
                 OnChangeTier.Invoke(CurrentTierNumber);
@@ -94,4 +96,6 @@ public class TruckStatus : MonoBehaviour
     {
         return a.PromoteScore.CompareTo(b.PromoteScore);
     }
+
+
 }
