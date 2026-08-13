@@ -25,6 +25,8 @@ public class GameDataManager : SingletonBase<GameDataManager>
         LoadData<WaveData>("WaveData");
         LoadData<StageData>("StageData");
         LoadData<UpgradeData>("UpgradeData");
+        LoadData<AbsorbTargetData>("AbsorbTargetData");
+        LoadData<SpawnZoneData>("SpawnZoneData");
 
         IsLoaded = true;
         Debug.Log($"[GameDataManager] 전체 테이블 로드 완료: {_dataTables.Count}개");

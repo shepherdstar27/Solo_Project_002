@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 9f0fc5468c7ed2c4db754f443a62036d
   m_SerializeEntries:
+  - m_GUID: 17e7ca4f7c8b30e49afaa0c5d80b6056
+    m_Address: Target_Person
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 230e00abe24ef6a4bb612d56f4a327db
     m_Address: Truck
     m_ReadOnly: 0
@@ -22,6 +27,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 254af849dc4920c45a47227be4e9084e
     m_Address: Environment
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45861ab70851e6a4193bea36f38bd80e
+    m_Address: Target_Bus
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a873e60b84e4df4ba1451cea2bddbd3
+    m_Address: Target_Bike
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -35,6 +50,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad665718f7b1e4a4ab2cc66d7c87c0bc
+    m_Address: Target_House
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ae3c126379a2b1e4bbdb57a865484064
     m_Address: TargetSpawner
     m_ReadOnly: 0
@@ -42,6 +62,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b7a269ca076801e4b9f21436aa1fb10e
     m_Address: AbsorbTarget
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff8e6a01b4362744395cbddb3b124587
+    m_Address: Target_Car
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -1,0 +1,56 @@
+[
+  {
+    "Id": "Target_01",
+    "Name": "행인",
+    "SizeValue": 1,
+    "Score": 1,
+    "VisualScale": 3,
+    "PrefabKey": "Target_Person",
+    "TierId": "Tier_01"
+  },
+  {
+    "Id": "Target_02",
+    "Name": "강아지",
+    "SizeValue": 1,
+    "Score": 1,
+    "VisualScale": 2,
+    "PrefabKey": "Target_Person",
+    "TierId": "Tier_01"
+  },
+  {
+    "Id": "Target_03",
+    "Name": "자전거",
+    "SizeValue": 2,
+    "Score": 2,
+    "VisualScale": 5,
+    "PrefabKey": "Target_Bike",
+    "TierId": "Tier_02"
+  },
+  {
+    "Id": "Target_04",
+    "Name": "승용차",
+    "SizeValue": 4,
+    "Score": 4,
+    "VisualScale": 8,
+    "PrefabKey": "Target_Car",
+    "TierId": "Tier_03"
+  },
+  {
+    "Id": "Target_05",
+    "Name": "버스",
+    "SizeValue": 8,
+    "Score": 8,
+    "VisualScale": 13,
+    "PrefabKey": "Target_Bus",
+    "TierId": "Tier_04"
+  },
+  {
+    "Id": "Target_06",
+    "Name": "집",
+    "SizeValue": 16,
+    "Score": 16,
+    "VisualScale": 20,
+    "PrefabKey": "Target_House",
+    "TierId": "Tier_05"
+  }
+]

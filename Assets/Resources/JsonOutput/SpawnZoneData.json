@@ -1,0 +1,32 @@
+[
+  {
+    "Id": "Zone_01",
+    "ZoneName": "공원",
+    "CenterX": 0,
+    "CenterZ": 0,
+    "InnerRadius": 20,
+    "OuterRadius": "120",
+    "Target_List": "Target_01,Target_02,Target_03",
+    "Count_List": "60,30,25"
+  },
+  {
+    "Id": "Zone_02",
+    "ZoneName": "도로",
+    "CenterX": 0,
+    "CenterZ": 0,
+    "InnerRadius": 120,
+    "OuterRadius": "260",
+    "Target_List": "Target_03,Target_04,Target_05",
+    "Count_List": "30,35,15"
+  },
+  {
+    "Id": "Zone_03",
+    "ZoneName": "주택가",
+    "CenterX": 0,
+    "CenterZ": 0,
+    "InnerRadius": 260,
+    "OuterRadius": "420",
+    "Target_List": "Target_04,Target_05,Target_06",
+    "Count_List": "20,20,12"
+  }
+]

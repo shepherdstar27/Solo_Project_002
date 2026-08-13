@@ -5,7 +5,6 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float _baseDistance = 11f;
     [SerializeField] private float _baseHeight = 6f;
     [SerializeField] private float _lookAtHeightOffset = 2f;
-    [SerializeField] private float _followSmoothTime = 0.05f;
     [SerializeField] private float _zoomPerTier = 0.4f;
     [SerializeField] private float _maxZoomMultiplier = 2.6f;
     [SerializeField] private float _zoomLerpSpeed = 1.5f;
@@ -17,7 +16,6 @@ public class CameraFollow : MonoBehaviour
     private float _yaw;
     private float _currentZoom = 1f;
     private float _targetZoom = 1f;
-    private Vector3 _velocity;
 
     public void SetTarget(Transform target, TruckStatus status, TruckInput input)
     {

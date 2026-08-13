@@ -9,13 +9,22 @@ public class AbsorbableObject : MonoBehaviour
     public int SizeValue { get; private set; }
     public int Score { get; private set; }
 
+    public string PoolKey { get; private set; }
+
     private bool _isAbsorbed;
 
-    public void Initialize(int sizeValue, int score)
+    public void Initialize(int sizeValue, int score, string poolKey)
     {
         SizeValue = sizeValue;
         Score = score;
+        PoolKey = poolKey;
         _isAbsorbed = false;
+
+        Collider bodyCollider = GetComponent<Collider>();
+        if (bodyCollider != null)
+        {
+            bodyCollider.enabled = true;
+        }
     }
 
     public bool IsAbsorbed()
@@ -59,6 +68,7 @@ public class AbsorbableObject : MonoBehaviour
             await UniTask.Yield();
         }
 
-        Destroy(gameObject);   // 3단계에서 ObjectPoolManager.ReturnObject로 교체 예정
+        transform.localScale = startScale;   // 풀 반환 전 스케일 복원
+        ObjectPoolManager.Instance.ReturnObject(PoolKey, gameObject);
     }
 }
