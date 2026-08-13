@@ -18,7 +18,7 @@ public class AbsorbTargetSpawner : MonoBehaviour
 
         // 티어 1~5: sizeValue 1/2/4/8/16, 점수는 sizeValue와 동일 (테스트용)
         int[] sizeValues = { 1, 2, 4, 8, 16 };
-        float[] visualScales = { 3f, 5f, 8f, 13f, 20f };
+        float[] visualScales = { 2f, 3f, 4f, 7f, 10f };
 
         for (int ring = 0; ring < sizeValues.Length; ring++)
         {
