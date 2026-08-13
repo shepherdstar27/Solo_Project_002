@@ -30,6 +30,19 @@ public class StageLoader : SingletonBase<StageLoader>
             Debug.LogError("[StageLoader] Main Camera에 CameraFollow가 없습니다");
         }
 
+        CameraShaker shaker = Camera.main.GetComponent<CameraShaker>();
+        if (shaker != null)
+        {
+            AbsorbFeedbackManager.Instance.SetCameraShaker(shaker);
+        }
+
+        RectTransform popupRoot = canvas.transform.Find("Panel_PopupRoot") as RectTransform;
+        if (popupRoot != null)
+        {
+            ScorePopupSpawner.Instance.SetRoot(popupRoot);
+        }
+
+
         // 4. 테스트 타겟 스포너
         GameObject spawnerObject = await Addressables.InstantiateAsync("MapSpawner").ToUniTask();
         MapSpawner mapSpawner = spawnerObject.GetComponent<MapSpawner>();

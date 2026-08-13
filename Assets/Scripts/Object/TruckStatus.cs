@@ -35,7 +35,12 @@ public class TruckStatus : MonoBehaviour
     {
         _currentScore += target.Score;
 
-        // 대상의 sizeValue에 해당하는 티어의 유닛을 소환
+        // 흡수 피드백
+        AbsorbFeedbackManager.Instance.PlayAbsorbFeedback(
+            target.SizeValue,
+            target.transform.position,
+            target.Score);
+
         string summonUnitId = FindSummonUnitId(target.SizeValue);
         if (string.IsNullOrEmpty(summonUnitId) == false)
         {
@@ -69,6 +74,7 @@ public class TruckStatus : MonoBehaviour
         {
             _tierIndex++;
             ApplyTier();
+            AbsorbFeedbackManager.Instance.PlayTierUpFeedback();
 
             Debug.Log($"[밸런스] 티어 {CurrentTierNumber} 도달 / 경과 {Time.timeSinceLevelLoad:F1}초 / 누적 {_currentScore}점");
 
