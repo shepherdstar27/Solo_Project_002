@@ -1,0 +1,17 @@
+﻿# 에셋 스토어 및 서드파티 리소스는 언어 통계에서 제외
+Assets/ThirdParty/** linguist-vendored
+Assets/Plugins/** linguist-vendored
+Assets/Imported/** linguist-vendored
+
+# 셰이더는 직접 작성한 것이 아니므로 제외
+*.shader linguist-vendored
+*.hlsl linguist-vendored
+*.cginc linguist-vendored
+*.compute linguist-vendored
+
+# Wolfram으로 오인되는 파일 방지
+*.m linguist-language=Objective-C
+
+# 패키지 매니페스트는 통계 제외
+Packages/** linguist-vendored
+ProjectSettings/** linguist-vendored
