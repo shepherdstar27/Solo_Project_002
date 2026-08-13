@@ -35,12 +35,31 @@ public class TruckStatus : MonoBehaviour
     {
         _currentScore += target.Score;
 
+        // 대상의 sizeValue에 해당하는 티어의 유닛을 소환
+        string summonUnitId = FindSummonUnitId(target.SizeValue);
+        if (string.IsNullOrEmpty(summonUnitId) == false)
+        {
+            DefenseSessionManager.Instance.SummonUnit(summonUnitId);
+        }
+
         if (OnAbsorbTarget != null)
         {
             OnAbsorbTarget.Invoke(target);
         }
 
         CheckPromotion();
+    }
+
+    private string FindSummonUnitId(int sizeValue)
+    {
+        foreach (TierData tier in _tierList)
+        {
+            if (tier.SizeValue == sizeValue)
+            {
+                return tier.SummonUnitId;
+            }
+        }
+        return null;
     }
 
     private void CheckPromotion()

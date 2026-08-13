@@ -3,6 +3,6 @@
     "Id": "Stage_01",
     "TimeLimit": 120,
     "GateHp": 100,
-    "WaveIds": "[“Wave_01_01”, “Wave_01_02”, “Wave_01_03”]"
+    "Wave_List": "Wave_01_01,Wave_01_02,Wave_01_03"
   }
 ]

@@ -32,6 +32,24 @@ public class StageLoader : SingletonBase<StageLoader>
         // 4. 테스트 타겟 스포너
         await Addressables.InstantiateAsync("TargetSpawner").ToUniTask();
 
+
+        // 5. 디펜스 세션 시작
+        GameObject canvasStrip = canvas.GetComponentInChildren<DefenseStripView>().gameObject;
+        DefenseSessionManager.Instance.StartSession("Stage_01");
+
+        DefenseStripView stripView = canvasStrip.GetComponent<DefenseStripView>();
+        stripView.Bind(DefenseSessionManager.Instance.Simulation, DefenseSessionManager.Instance.Gate);
+
         Debug.Log("[StageLoader] 스테이지 로드 완료");
+
+        // 99. 경고 뷰 연결
+        DefenseWarningView warningView = canvas.GetComponentInChildren<DefenseWarningView>();
+        if (warningView != null)
+        {
+            warningView.Bind(
+                DefenseSessionManager.Instance.Gate,
+                DefenseSessionManager.Instance.Spawner,
+                DefenseSessionManager.Instance);
+        }
     }
 }

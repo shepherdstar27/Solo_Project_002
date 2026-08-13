@@ -10,14 +10,16 @@ public class LaneEntityView : MonoBehaviour
 
     private LaneEntity _entity;
     private float _laneHeight;
+    private float _laneHalfWidth;
 
     public LaneEntity Entity { get; private set; }
 
-    public void Bind(LaneEntity entity, float laneHeight, Color bodyColor)
+    public void Bind(LaneEntity entity, float laneHeight, float laneWidth, Color bodyColor)
     {
         _entity = entity;
         Entity = entity;
         _laneHeight = laneHeight;
+        _laneHalfWidth = laneWidth * 0.5f - 20f;
 
         Image_Body.color = bodyColor;
         UpdateView();
@@ -31,6 +33,7 @@ public class LaneEntityView : MonoBehaviour
         }
 
         Vector2 anchored = RectTransform_Root.anchoredPosition;
+        anchored.x = _entity.LanePositionX * _laneHalfWidth;
         anchored.y = _entity.LanePosition * _laneHeight;
         RectTransform_Root.anchoredPosition = anchored;
 

@@ -5,7 +5,7 @@
     "Hp": 30,
     "Attack": 5,
     "AttackInterval": 1,
-    "Range": 1,
+    "Range": 0.06,
     "MoveSpeed": 1,
     "PlacementType": "Melee",
     "LifeTime": 0
@@ -16,7 +16,7 @@
     "Hp": 15,
     "Attack": 8,
     "AttackInterval": 1.5,
-    "Range": 5,
+    "Range": 0.2,
     "MoveSpeed": 1,
     "PlacementType": "Ranged",
     "LifeTime": 0
@@ -38,7 +38,7 @@
     "Hp": 250,
     "Attack": 0,
     "AttackInterval": 0,
-    "Range": 3,
+    "Range": 0.15,
     "MoveSpeed": 0,
     "PlacementType": "Structure",
     "LifeTime": 0

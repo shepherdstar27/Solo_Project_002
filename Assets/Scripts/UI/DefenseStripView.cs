@@ -7,6 +7,7 @@ public class DefenseStripView : MonoBehaviour
     [SerializeField] private RectTransform RectTransform_LaneRoot;
     [SerializeField] private GameObject Prefab_LaneEntityView;
     [SerializeField] private Image Image_GateHpFill;
+    [SerializeField] private SummonEffectView SummonEffectView_Gate;
 
     [SerializeField] private Color _colorAlly = new Color(0.35f, 0.65f, 1f);
     [SerializeField] private Color _colorEnemy = new Color(1f, 0.45f, 0.45f);
@@ -31,10 +32,15 @@ public class DefenseStripView : MonoBehaviour
         LaneEntityView view = instance.GetComponent<LaneEntityView>();
 
         Color color = entity.Side == EntitySide.Ally ? _colorAlly : _colorEnemy;
-        view.Bind(entity, RectTransform_LaneRoot.rect.height, color);
+        view.Bind(entity, RectTransform_LaneRoot.rect.height, RectTransform_LaneRoot.rect.width, color);
 
         _entityViews.Add(view);
-        Debug.Log($"[Strip] 생성 {entity.Side} / LanePos {entity.LanePosition} / laneHeight {RectTransform_LaneRoot.rect.height} / anchoredY {instance.GetComponent<RectTransform>().anchoredPosition.y}");
+
+        // 아군 소환 시 게이트에서 "뿅" 연출
+        if (entity.Side == EntitySide.Ally && SummonEffectView_Gate != null)
+        {
+            SummonEffectView_Gate.PlaySummonEffect(color);
+        }
     }
 
     private void OnRemoveEntity(LaneEntity entity)
@@ -84,36 +90,4 @@ public class DefenseStripView : MonoBehaviour
 
 
 
-    private LaneSimulation _testSimulation;
-
-    private void Start()
-    {
-        DefenseGate gate = new DefenseGate();
-        gate.Setup(100f);
-
-        _testSimulation = new LaneSimulation();
-        _testSimulation.Setup(gate, 30);
-        Bind(_testSimulation, gate);
-
-        // 아군 검사 1기 (게이트 앞)
-        LaneEntity ally = new LaneEntity();
-        ally.Setup("Unit_01", EntitySide.Ally, 30, 5, 1f, 0.12f, 1f, 0f, 0.15f);
-        _testSimulation.AddEntity(ally);
-
-        // 적 몬스터 2기 (상단)
-        for (int i = 0; i < 2; i++)
-        {
-            LaneEntity enemy = new LaneEntity();
-            enemy.Setup("Monster_01", EntitySide.Enemy, 20, 5, 1f, 0.1f, 1f, 0f, 1f - i * 0.15f);
-            _testSimulation.AddEntity(enemy);
-        }
-    }
-
-    private void Update()
-    {
-        if (_testSimulation != null)
-        {
-            _testSimulation.UpdateSimulation(Time.deltaTime);
-        }
-    }
 }

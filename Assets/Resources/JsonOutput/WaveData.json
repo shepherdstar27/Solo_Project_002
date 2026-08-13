@@ -2,22 +2,22 @@
   {
     "Id": "Wave_01_01",
     "SpawnTime": 10,
-    "MonsterIds": "[“Monster_01”]",
-    "MonsterCounts": "[3]",
-    "SpawnInterval": 1
+    "Monster_List": "Monster_01",
+    "Count_List": "10",
+    "SpawnInterval": 0.2
   },
   {
     "Id": "Wave_01_02",
-    "SpawnTime": 60,
-    "MonsterIds": "[“Monster_01”]",
-    "MonsterCounts": "[3]",
-    "SpawnInterval": 1
+    "SpawnTime": 30,
+    "Monster_List": "Monster_01",
+    "Count_List": "20",
+    "SpawnInterval": 0.2
   },
   {
     "Id": "Wave_01_03",
-    "SpawnTime": 95,
-    "MonsterIds": "[“Monster_01”]",
-    "MonsterCounts": "[3]",
-    "SpawnInterval": 0.8
+    "SpawnTime": 60,
+    "Monster_List": "Monster_01",
+    "Count_List": "30",
+    "SpawnInterval": 0.2
   }
 ]

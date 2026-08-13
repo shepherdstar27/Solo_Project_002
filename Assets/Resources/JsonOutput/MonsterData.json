@@ -5,7 +5,7 @@
     "Hp": 20,
     "Attack": 5,
     "AttackInterval": 1,
-    "Range": 1,
+    "Range": 0.06,
     "MoveSpeed": 1,
     "Type": "Melee"
   },
@@ -15,7 +15,7 @@
     "Hp": 12,
     "Attack": 6,
     "AttackInterval": 2,
-    "Range": 4,
+    "Range": 0.25,
     "MoveSpeed": 0.8,
     "Type": "Ranged"
   },
@@ -25,7 +25,7 @@
     "Hp": 35,
     "Attack": 10,
     "AttackInterval": 1,
-    "Range": 1,
+    "Range": 0.06,
     "MoveSpeed": 2,
     "Type": "Rush"
   },
@@ -35,7 +35,7 @@
     "Hp": 300,
     "Attack": 25,
     "AttackInterval": 2,
-    "Range": 1.5,
+    "Range": 0.1,
     "MoveSpeed": 0.5,
     "Type": "Boss"
   }

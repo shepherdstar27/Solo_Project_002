@@ -19,7 +19,8 @@ public class LaneEntity
     public float Range { get; private set; }
     public float MoveSpeed { get; private set; }
 
-    public float LanePosition { get; set; }      // 0 = 게이트, 1 = 최상단
+    public float LanePosition { get; set; }    // 0 = 게이트, 1 = 최상단
+    public float LanePositionX { get; set; }   // -1(좌) ~ 1(우)
     public float LifeTime { get; private set; }  // 0이면 무제한
 
     private float _attackCooldown;

@@ -5,6 +5,10 @@ using UnityEngine;
 public class LaneSimulation
 {
     private const float TargetingInterval = 0.2f;
+    private const float MinGap = 0.05f;        // 개체 간 최소 거리 (2D)
+    private const float WidthRatio = 0.25f;    // 가로:세로 화면 비율 보정
+
+    private float _moveScale = 0.15f;   // 레인 이동 속도 계수 (밸런싱 값)
 
     private List<LaneEntity> _allies = new List<LaneEntity>();
     private List<LaneEntity> _enemies = new List<LaneEntity>();
@@ -17,10 +21,11 @@ public class LaneSimulation
     public event Action<LaneEntity> OnSpawnEntity;
     public event Action<LaneEntity> OnRemoveEntity;
 
-    public void Setup(DefenseGate gate, int maxAllyCount)
+    public void Setup(DefenseGate gate, int maxAllyCount, float moveScale)
     {
         _gate = gate;
         _maxAllyCount = maxAllyCount;
+        _moveScale = moveScale;
         _allies.Clear();
         _enemies.Clear();
     }
@@ -72,15 +77,7 @@ public class LaneSimulation
 
             enemy.UpdateCooldown(deltaTime);
 
-            LaneEntity target = null;
-            if (isTargetingFrame)
-            {
-                target = FindNearestTarget(enemy, _allies);
-            }
-            else
-            {
-                target = FindNearestTarget(enemy, _allies);
-            }
+             LaneEntity target = FindNearestTarget(enemy, _allies);
 
             // 사거리 내 아군이 있으면 정지 후 공격
             if (target != null && GetDistance(enemy, target) <= enemy.Range)
@@ -101,8 +98,11 @@ public class LaneSimulation
                 continue;
             }
 
+            // 타겟이 있으면 타겟 방향으로, 없으면 아래로 직진
+            MoveToward(enemy, target, -1f, deltaTime);
+
             // 아래로 직진
-            enemy.LanePosition -= enemy.MoveSpeed * 0.1f * deltaTime;
+            enemy.LanePosition -= enemy.MoveSpeed * _moveScale * deltaTime;
             if (enemy.LanePosition < 0f)
             {
                 enemy.LanePosition = 0f;
@@ -145,13 +145,13 @@ public class LaneSimulation
                 continue;
             }
 
-            // 근접 유닛만 짧은 전진 허용
+            // 근접 유닛만 짧은 전진 허용 (전선 0.5를 넘지 않음)
             if (ally.MoveSpeed > 0f)
             {
-                ally.LanePosition += ally.MoveSpeed * 0.1f * deltaTime;
-                if (ally.LanePosition > 1f)
+                MoveToward(ally, target, 1f, deltaTime);
+                if (ally.LanePosition > 0.5f)
                 {
-                    ally.LanePosition = 1f;
+                    ally.LanePosition = 0.5f;
                 }
             }
         }
@@ -182,7 +182,9 @@ public class LaneSimulation
 
     private float GetDistance(LaneEntity a, LaneEntity b)
     {
-        return Mathf.Abs(a.LanePosition - b.LanePosition);
+        float dy = a.LanePosition - b.LanePosition;
+        float dx = (a.LanePositionX - b.LanePositionX) * WidthRatio;
+        return Mathf.Sqrt(dy * dy + dx * dx);
     }
 
     private void CleanupDeadEntities()
@@ -224,6 +226,96 @@ public class LaneSimulation
         if (OnRemoveEntity != null)
         {
             OnRemoveEntity.Invoke(entity);
+        }
+    }
+
+    private void MoveToward(LaneEntity self, LaneEntity target, float defaultDirectionY, float deltaTime)
+    {
+        float step = self.MoveSpeed * _moveScale * deltaTime;
+
+        if (target == null)
+        {
+            self.LanePosition += defaultDirectionY * step;
+            ClampPosition(self);
+            return;
+        }
+
+        float dy = target.LanePosition - self.LanePosition;
+        float dx = target.LanePositionX - self.LanePositionX;
+        float length = Mathf.Sqrt(dy * dy + dx * dx);
+
+        if (length < 0.0001f)
+        {
+            return;
+        }
+
+        self.LanePosition += (dy / length) * step;
+        self.LanePositionX += (dx / length) * step * 2f;   // 가로는 더 빠르게 좁힘
+        ClampPosition(self);
+    }
+
+    private void ClampPosition(LaneEntity entity)
+    {
+        if (entity.LanePosition < 0f)
+        {
+            entity.LanePosition = 0f;
+        }
+        if (entity.LanePositionX < -1f)
+        {
+            entity.LanePositionX = -1f;
+        }
+        if (entity.LanePositionX > 1f)
+        {
+            entity.LanePositionX = 1f;
+        }
+    }
+
+    private void ResolveOverlap()
+    {
+        PushApart(_enemies);
+        PushApart(_allies);
+    }
+
+    private void PushApart(List<LaneEntity> entities)
+    {
+        for (int i = 0; i < entities.Count; i++)
+        {
+            LaneEntity a = entities[i];
+            if (a.IsAlive() == false)
+            {
+                continue;
+            }
+
+            for (int j = i + 1; j < entities.Count; j++)
+            {
+                LaneEntity b = entities[j];
+                if (b.IsAlive() == false)
+                {
+                    continue;
+                }
+
+                float dy = b.LanePosition - a.LanePosition;
+                float dx = (b.LanePositionX - a.LanePositionX) * WidthRatio;
+                float distance = Mathf.Sqrt(dy * dy + dx * dx);
+
+                if (distance >= MinGap || distance < 0.0001f)
+                {
+                    continue;
+                }
+
+                // 서로 절반씩 밀어냄
+                float push = (MinGap - distance) * 0.5f;
+                float normalY = dy / distance;
+                float normalX = dx / distance;
+
+                a.LanePosition -= normalY * push;
+                b.LanePosition += normalY * push;
+                a.LanePositionX -= normalX * push / WidthRatio;
+                b.LanePositionX += normalX * push / WidthRatio;
+
+                ClampPosition(a);
+                ClampPosition(b);
+            }
         }
     }
 }
