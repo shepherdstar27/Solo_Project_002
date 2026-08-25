@@ -4,13 +4,15 @@ using System.Collections.Generic;
 [Serializable]
 public class SpawnZoneData : GameDataBase
 {
-    public string ZoneName;        // 공원, 도로, 주택가
-    public float CenterX;
-    public float CenterZ;
-    public float InnerRadius;
-    public float OuterRadius;
-    public string Target_List;     // "Target_01,Target_02"
-    public string Count_List;      // "40,25"
+    public string ZoneName;
+    public string ZoneType;
+    public float MinX;
+    public float MaxX;
+    public float MinZ;
+    public float MaxZ;
+    public string Target_List;
+    public string Count_List;
+    public string PlacementType;
 
     public List<string> GetTargetIds()
     {

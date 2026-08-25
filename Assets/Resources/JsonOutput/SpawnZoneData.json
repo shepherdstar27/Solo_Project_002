@@ -2,31 +2,49 @@
   {
     "Id": "Zone_01",
     "ZoneName": "공원",
-    "CenterX": 0,
-    "CenterZ": 0,
-    "InnerRadius": 20,
-    "OuterRadius": "120",
-    "Target_List": "Target_01,Target_02,Target_03",
-    "Count_List": "60,30,25"
+    "ZoneType": "Park",
+    "MinX": -140,
+    "MaxX": 140,
+    "MinZ": -320,
+    "MaxZ": "-100",
+    "PlacementType": "Scatter",
+    "Target_List": "Target_01,Target_02,Target_03,Target_04,Target_05,Target_06",
+    "Count_List": "55,32,20,7,3,1"
   },
   {
     "Id": "Zone_02",
-    "ZoneName": "도로",
-    "CenterX": 0,
-    "CenterZ": 0,
-    "InnerRadius": 120,
-    "OuterRadius": "260",
-    "Target_List": "Target_03,Target_04,Target_05",
-    "Count_List": "30,35,15"
+    "ZoneName": "빌라촌",
+    "ZoneType": "Villa",
+    "MinX": -140,
+    "MaxX": 140,
+    "MinZ": -100,
+    "MaxZ": "120",
+    "PlacementType": "Grid",
+    "Target_List": "Target_01,Target_02,Target_03,Target_04,Target_05,Target_06",
+    "Count_List": "22,14,18,24,11,16"
   },
   {
     "Id": "Zone_03",
-    "ZoneName": "주택가",
-    "CenterX": 0,
-    "CenterZ": 0,
-    "InnerRadius": 260,
-    "OuterRadius": "420",
-    "Target_List": "Target_04,Target_05,Target_06",
-    "Count_List": "20,20,12"
+    "ZoneName": "시내",
+    "ZoneType": "Downtown",
+    "MinX": -140,
+    "MaxX": 140,
+    "MinZ": 120,
+    "MaxZ": "340",
+    "PlacementType": "Grid",
+    "Target_List": "Target_01,Target_02,Target_03,Target_04,Target_05,Target_06",
+    "Count_List": "38,10,24,32,16,6"
+  },
+  {
+    "Id": "Zone_04",
+    "ZoneName": "군부대",
+    "ZoneType": "Military",
+    "MinX": -140,
+    "MaxX": 140,
+    "MinZ": 340,
+    "MaxZ": "560",
+    "PlacementType": "Cluster",
+    "Target_List": "Target_01,Target_02,Target_03,Target_04,Target_05,Target_06",
+    "Count_List": "6,8,18,26,20"
   }
 ]

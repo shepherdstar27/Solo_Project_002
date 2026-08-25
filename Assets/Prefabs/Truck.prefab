@@ -210,7 +210,7 @@ Transform:
   m_GameObject: {fileID: 6795830530937144315}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.65794, y: 0.42, z: 0.68896}
+  m_LocalPosition: {x: 0, y: 0, z: -300}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -229,6 +229,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7089f0a667b62a4c8253a437ccfc170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TruckStatus
+  _comboFullDuration: 2
+  _comboDecayDuration: 3
+  _comboBonusPerCombo: 0.05
+  _comboMaxMultiplier: 3
 --- !u!114 &504666632113122101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,7 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c56a9f1537259ef4a8361f444f95825a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TruckController
-  _maxSpeed: 14
+  _maxSpeed: 25
   _maxReverseSpeed: -5
   _accelRate: 9
   _reverseAccelRate: 5
