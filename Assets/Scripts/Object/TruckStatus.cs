@@ -15,15 +15,39 @@ public class TruckStatus : MonoBehaviour
 
     public event Action<AbsorbableObject> OnAbsorbTarget;
     public event Action<int> OnChangeTier;             // 새 티어 번호 전달
+    public event Action<string, string> OnTransfer;   // 대상 이름, 유닛 이름
+
+
+    //콤보 관련
+    [SerializeField] private float _comboFullDuration = 2f;
+    [SerializeField] private float _comboDecayDuration = 3f;
+    [SerializeField] private float _comboBonusPerCombo = 0.05f;   // 콤보당 5% 증가
+    [SerializeField] private float _comboMaxMultiplier = 3f;
+
+    private ComboSystem _comboSystem = new ComboSystem();
+    public ComboSystem Combo { get { return _comboSystem; } }
+
+    //트럭 계기판 관련
+    public event Action<int> OnChangeScore;
+    public event Action<float> OnChangeTierProgress;
+
+
+
 
     public void Initialize()
     {
         _tierList = GameDataManager.Instance.GetAllData<TierData>();
         _tierList.Sort(CompareTierByScore);
 
+        _comboSystem.Setup(_comboFullDuration, _comboDecayDuration);
+
         _tierIndex = 0;
         _currentScore = 0;
         ApplyTier();
+    }
+    private void Update()
+    {
+        _comboSystem.UpdateCombo(Time.deltaTime);
     }
 
     public bool IsAbsorbable(AbsorbableObject target)
@@ -33,18 +57,23 @@ public class TruckStatus : MonoBehaviour
 
     public void AbsorbTarget(AbsorbableObject target)
     {
-        _currentScore += target.Score;
+        _comboSystem.AddCombo();
 
-        // 흡수 피드백
+        float multiplier = _comboSystem.GetScoreMultiplier(_comboBonusPerCombo, _comboMaxMultiplier);
+        int finalScore = Mathf.RoundToInt(target.Score * multiplier);
+        _currentScore += finalScore;
+
         AbsorbFeedbackManager.Instance.PlayAbsorbFeedback(
             target.SizeValue,
             target.transform.position,
-            target.Score);
+            finalScore);
 
         string summonUnitId = FindSummonUnitId(target.SizeValue);
         if (string.IsNullOrEmpty(summonUnitId) == false)
         {
             DefenseSessionManager.Instance.SummonUnit(summonUnitId);
+            NotifyTransferLog(target.PoolKey, summonUnitId);
+            TargetShowcaseController.Instance.ShowTarget(target.PoolKey);
         }
 
         if (OnAbsorbTarget != null)
@@ -52,7 +81,29 @@ public class TruckStatus : MonoBehaviour
             OnAbsorbTarget.Invoke(target);
         }
 
+        if (OnChangeScore != null)
+        {
+            OnChangeScore.Invoke(_currentScore);
+        }
+        NotifyTierProgress();
+
         CheckPromotion();
+    }
+
+    private void NotifyTransferLog(string targetId, string unitId)
+    {
+        AbsorbTargetData targetData = GameDataManager.Instance.GetData<AbsorbTargetData>(targetId);
+        UnitData unitData = GameDataManager.Instance.GetData<UnitData>(unitId);
+
+        if (targetData == null || unitData == null)
+        {
+            return;
+        }
+
+        if (OnTransfer != null)
+        {
+            OnTransfer.Invoke(targetData.Name, unitData.Name);
+        }
     }
 
     private string FindSummonUnitId(int sizeValue)
@@ -96,11 +147,41 @@ public class TruckStatus : MonoBehaviour
         transform.localScale = new Vector3(scale, scale, scale);
 
         Debug.Log($"[TruckStatus] 티어 {CurrentTierNumber} / 흡수 상한 {TruckSize} / 누적 점수 {_currentScore}");
+
+        NotifyTierProgress();
     }
 
     private static int CompareTierByScore(TierData a, TierData b)
     {
         return a.PromoteScore.CompareTo(b.PromoteScore);
+    }
+
+    private void NotifyTierProgress()
+    {
+        if (OnChangeTierProgress == null)
+        {
+            return;
+        }
+
+        // 다음 티어가 없으면 가득 찬 상태
+        if (_tierIndex + 1 >= _tierList.Count)
+        {
+            OnChangeTierProgress.Invoke(1f);
+            return;
+        }
+
+        int currentThreshold = _tierList[_tierIndex].PromoteScore;
+        int nextThreshold = _tierList[_tierIndex + 1].PromoteScore;
+        int range = nextThreshold - currentThreshold;
+
+        if (range <= 0)
+        {
+            OnChangeTierProgress.Invoke(1f);
+            return;
+        }
+
+        float ratio = (float)(_currentScore - currentThreshold) / range;
+        OnChangeTierProgress.Invoke(Mathf.Clamp01(ratio));
     }
 
 

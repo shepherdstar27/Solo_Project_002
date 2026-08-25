@@ -16,6 +16,20 @@ public class StageLoader : SingletonBase<StageLoader>
         TruckController controller = truck.GetComponent<TruckController>();
         TruckInput input = truck.GetComponent<TruckInput>();
 
+        //전송 문구 뷰
+        TransferLogView transferLogView = canvas.GetComponentInChildren<TransferLogView>();
+        if (transferLogView != null)
+        {
+            status.OnTransfer += transferLogView.AddLog;
+        }
+
+        //콤보 뷰
+        ComboView comboView = canvas.GetComponentInChildren<ComboView>();
+        if (comboView != null)
+        {
+            comboView.Bind(status.Combo);
+        }
+
         status.Initialize();
 
         // 3. 카메라 연결 (Main Camera에 CameraFollow 부착 전제)
@@ -57,6 +71,8 @@ public class StageLoader : SingletonBase<StageLoader>
         stripView.Bind(DefenseSessionManager.Instance.Simulation, DefenseSessionManager.Instance.Gate);
 
         Debug.Log("[StageLoader] 스테이지 로드 완료");
+
+
 
         // 99. 경고 뷰 연결
         DefenseWarningView warningView = canvas.GetComponentInChildren<DefenseWarningView>();
