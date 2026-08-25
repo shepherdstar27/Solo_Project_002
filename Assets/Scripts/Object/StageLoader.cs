@@ -30,6 +30,17 @@ public class StageLoader : SingletonBase<StageLoader>
             comboView.Bind(status.Combo);
         }
 
+        //대시보드 뷰
+        DashboardView dashboardView = canvas.GetComponentInChildren<DashboardView>();
+        if (dashboardView != null)
+        {
+            dashboardView.Bind(controller, status);
+        }
+
+        GameObject showcaseObject = await Addressables.InstantiateAsync("Showcase").ToUniTask();
+        TargetShowcase showcase = showcaseObject.GetComponent<TargetShowcase>();
+        TargetShowcaseController.Instance.SetShowcase(showcase);
+
         status.Initialize();
 
         // 3. 카메라 연결 (Main Camera에 CameraFollow 부착 전제)

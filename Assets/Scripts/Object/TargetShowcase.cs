@@ -14,22 +14,28 @@ public class TargetShowcase : MonoBehaviour
 
     public async UniTask ShowTargetAsync(string targetId)
     {
+        Debug.Log($"[Showcase] 호출됨: {targetId}");
+
         if (_currentTargetId == targetId && _currentModel != null)
         {
-            return;   // 같은 종류면 교체하지 않음
+            return;
         }
 
         AbsorbTargetData data = GameDataManager.Instance.GetData<AbsorbTargetData>(targetId);
         if (data == null)
         {
+            Debug.LogError($"[Showcase] 데이터 없음: {targetId}");
             return;
         }
 
         GameObject prefab = await Addressables.LoadAssetAsync<GameObject>(data.PrefabKey).ToUniTask();
         if (prefab == null)
         {
+            Debug.LogError($"[Showcase] 프리팹 로드 실패: {data.PrefabKey}");
             return;
         }
+
+        Debug.Log($"[Showcase] 모델 생성: {data.Name}");
 
         ClearCurrentModel();
 
