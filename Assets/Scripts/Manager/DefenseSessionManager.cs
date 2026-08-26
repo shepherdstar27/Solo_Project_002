@@ -91,7 +91,6 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
             return;
         }
 
-        Debug.Log($"[Session] 경과 {_sessionTime:F1}초");
 
         float deltaTime = Time.deltaTime;
         _sessionTime += deltaTime;

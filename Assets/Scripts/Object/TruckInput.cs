@@ -21,6 +21,15 @@ public class TruckInput : MonoBehaviour
 
     private void Update()
     {
+        if (PauseManager.Instance != null && PauseManager.Instance.IsPaused)
+        {
+            MoveInput = Vector2.zero;
+            MouseDeltaX = 0f;
+            IsAccelerating = false;
+            IsBraking = false;
+            return;
+        }
+
         UpdateKeyboard();
         UpdateMouse();
     }
@@ -43,17 +52,9 @@ public class TruckInput : MonoBehaviour
             vertical += 1f;
         }
 
-
         MoveInput = new Vector2(horizontal, vertical);
         IsAccelerating = Input.GetKey(KeyCode.W);
         IsBraking = Input.GetKey(KeyCode.S);
-
-        // ESC로 커서 해제 (에디터 작업 편의)
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
     }
 
     private void UpdateMouse()

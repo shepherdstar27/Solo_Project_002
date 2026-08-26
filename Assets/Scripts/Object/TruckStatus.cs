@@ -39,6 +39,11 @@ public class TruckStatus : MonoBehaviour
         _tierList = GameDataManager.Instance.GetAllData<TierData>();
         _tierList.Sort(CompareTierByScore);
 
+        foreach (TierData tier in _tierList)
+        {
+            Debug.Log($"[Tier] {tier.Id} / Size {tier.SizeValue} / Unit {tier.SummonUnitId}");
+        }
+
         _comboSystem.Setup(_comboFullDuration, _comboDecayDuration);
 
         _tierIndex = 0;
@@ -112,9 +117,12 @@ public class TruckStatus : MonoBehaviour
         {
             if (tier.SizeValue == sizeValue)
             {
+                Debug.Log($"[TruckStatus] sizeValue {sizeValue} → {tier.SummonUnitId}");
                 return tier.SummonUnitId;
             }
         }
+
+        Debug.LogWarning($"[TruckStatus] sizeValue {sizeValue}에 해당하는 티어 없음");
         return null;
     }
 

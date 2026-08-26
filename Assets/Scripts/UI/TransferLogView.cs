@@ -28,7 +28,8 @@ public class TransferLogView : MonoBehaviour
         TextMeshProUGUI text = instance.GetComponentInChildren<TextMeshProUGUI>();
         if (text != null)
         {
-            text.text = $"{targetName} → <color=#FFD34D>{unitName}</color>!";
+            // '→'(U+2192)는 NotoSansKR SDF 아틀라스에 없어 공백으로 대체된다. ASCII로 표기.
+            text.text = $"{targetName} >> <color=#FFD34D>{unitName}</color>!";
         }
 
         PlayEntryAsync(instance, text).Forget();

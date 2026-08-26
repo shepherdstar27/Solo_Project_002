@@ -51,8 +51,6 @@ public class StageLoader : SingletonBase<StageLoader>
         TargetShowcase showcase = showcaseObject.GetComponent<TargetShowcase>();
         TargetShowcaseController.Instance.SetShowcase(showcase);
 
-        status.Initialize();
-
         // 3. 카메라 연결
         CameraFollow cameraFollow = Camera.main.GetComponent<CameraFollow>();
         if (cameraFollow != null)

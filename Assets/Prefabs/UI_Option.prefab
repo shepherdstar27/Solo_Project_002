@@ -2372,7 +2372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f76da969e51eee4f9d860509728cc7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OptionUI
-  _layer: 1
+  _layer: 3
   Slider_BgmVolume: {fileID: 8573341079233557964}
   Slider_SfxVolume: {fileID: 6892740349834184420}
   Text_BgmValue: {fileID: 6846019479956849936}

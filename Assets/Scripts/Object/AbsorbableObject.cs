@@ -68,8 +68,6 @@ public class AbsorbableObject : MonoBehaviour
         float elapsed = 0f;
         int frameCount = 0;
 
-        Debug.Log($"[Absorb] 연출 시작 / 스케일 {startScale} / 위치 {startPosition}");
-
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
@@ -80,15 +78,8 @@ public class AbsorbableObject : MonoBehaviour
             transform.localScale = startScale * (1f - t);
             transform.Rotate(Vector3.up, 720f * Time.deltaTime, Space.World);
 
-            if (frameCount % 5 == 0)
-            {
-                Debug.Log($"[Absorb] {frameCount}프레임 / t {t:F2} / 스케일 {transform.localScale.x:F2} / 위치 {transform.position}");
-            }
-
             await UniTask.Yield();
         }
-
-        Debug.Log($"[Absorb] 연출 종료 / 총 {frameCount}프레임 / poolKey '{_poolKey}'");
 
         transform.localScale = startScale;
 

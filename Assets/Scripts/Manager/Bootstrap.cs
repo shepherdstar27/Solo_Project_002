@@ -48,5 +48,7 @@ public class Bootstrap : MonoBehaviour
         AudioManager.Instance.PlayGameBgm();
 
         await StageLoader.Instance.LoadStageAsync();
+
+        PauseManager.Instance.SetEnabled(true);
     }
 }
