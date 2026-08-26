@@ -12,52 +12,58 @@ public class RoadSegment
 {
     public string Name = "Road";
     public RoadDirection Direction = RoadDirection.Vertical;
-    public float CenterX;
-    public float CenterZ;
-    public float Length = 200f;
-    public float Width = 30f;
+    public GameObject Prefab_Road;
+    public float StartX;
+    public float StartZ;
+    public int TileCount = 5;
+    public float Width = 30f;        // 배치 규칙 계산용 (프리팹 실제 폭에 맞춰 입력)
 
-    public Vector3 GetCenter()
+    public Vector3 GetStartPosition()
     {
-        return new Vector3(CenterX, 0f, CenterZ);
+        return new Vector3(StartX, 0f, StartZ);
     }
 
-    public Vector3 GetSize()
-    {
-        if (Direction == RoadDirection.Vertical)
-        {
-            return new Vector3(Width, 1f, Length);
-        }
-        return new Vector3(Length, 1f, Width);
-    }
-
-    public float GetDistanceFromCenterLine(Vector3 position)
-    {
-        if (Direction == RoadDirection.Vertical)
-        {
-            // 세로 도로: 구간 범위 밖이면 매우 먼 값
-            float halfLength = Length * 0.5f;
-            if (position.z < CenterZ - halfLength || position.z > CenterZ + halfLength)
-            {
-                return float.MaxValue;
-            }
-            return Mathf.Abs(position.x - CenterX);
-        }
-
-        float halfLengthX = Length * 0.5f;
-        if (position.x < CenterX - halfLengthX || position.x > CenterX + halfLengthX)
-        {
-            return float.MaxValue;
-        }
-        return Mathf.Abs(position.z - CenterZ);
-    }
-
-    public Vector3 GetForwardDirection()
+    public Vector3 GetDirectionVector()
     {
         if (Direction == RoadDirection.Vertical)
         {
             return Vector3.forward;
         }
         return Vector3.right;
+    }
+
+    public float GetTotalLength(float tileLength)
+    {
+        return tileLength * TileCount;
+    }
+
+    public float GetCenterCoordinate()
+    {
+        return Direction == RoadDirection.Vertical ? StartX : StartZ;
+    }
+
+    public float GetDistanceFromCenterLine(Vector3 position, float tileLength)
+    {
+        float totalLength = GetTotalLength(tileLength);
+
+        if (Direction == RoadDirection.Vertical)
+        {
+            if (position.z < StartZ || position.z > StartZ + totalLength)
+            {
+                return float.MaxValue;
+            }
+            return Mathf.Abs(position.x - StartX);
+        }
+
+        if (position.x < StartX || position.x > StartX + totalLength)
+        {
+            return float.MaxValue;
+        }
+        return Mathf.Abs(position.z - StartZ);
+    }
+
+    public Vector3 GetForwardDirection()
+    {
+        return GetDirectionVector();
     }
 }

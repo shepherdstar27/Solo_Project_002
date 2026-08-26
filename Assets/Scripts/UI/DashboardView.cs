@@ -61,8 +61,8 @@ public class DashboardView : MonoBehaviour
             return;
         }
 
-        float speed = Mathf.Abs(_truckController.CurrentSpeed);
-        float ratio = Mathf.Clamp01(speed / _maxSpeedForGauge);
+        float speedKph = _truckController.CurrentSpeedKph;
+        float ratio = Mathf.Clamp01(speedKph / _maxSpeedForGauge);
 
         if (Image_SpeedFill != null)
         {
@@ -77,7 +77,7 @@ public class DashboardView : MonoBehaviour
 
         if (Text_SpeedValue != null)
         {
-            Text_SpeedValue.text = $"{Mathf.RoundToInt(speed * 8f)}";   // 표시용 배율
+            Text_SpeedValue.text = $"{Mathf.RoundToInt(speedKph)}";
         }
     }
 

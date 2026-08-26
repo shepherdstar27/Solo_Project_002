@@ -61,37 +61,89 @@ public class MapGeneratorWindow : EditorWindow
         EditorGUILayout.HelpBox("생성 후 씬을 저장해야 결과가 유지됩니다.", MessageType.None);
     }
 
+    // ─────────────────────────────────────────────
+    // 도로 생성
+    // ─────────────────────────────────────────────
+
     private void GenerateRoads()
     {
         PrepareRoots();
         ClearChildren(_roadRoot);
 
+        int totalTiles = 0;
+
         foreach (RoadSegment segment in _layout.RoadSegments)
         {
-            GameObject road = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            road.name = $"Road_{segment.Name}";
-            road.transform.SetParent(_roadRoot);
-
-            Vector3 size = segment.GetSize();
-            road.transform.position = segment.GetCenter() + new Vector3(0f, 0.05f, 0f);
-            road.transform.localScale = new Vector3(size.x, 0.1f, size.z);
-
-            Collider roadCollider = road.GetComponent<Collider>();
-            if (roadCollider != null)
+            if (segment.Prefab_Road == null)
             {
-                DestroyImmediate(roadCollider);
+                Debug.LogError($"[맵 생성기] 도로 프리팹이 없습니다: {segment.Name}");
+                continue;
             }
 
-            if (_layout.Material_Road != null)
+            float tileLength = GetPrefabLength(segment.Prefab_Road);
+            if (tileLength < 0.01f)
             {
-                road.GetComponent<Renderer>().sharedMaterial = _layout.Material_Road;
+                Debug.LogError($"[맵 생성기] 도로 길이를 잴 수 없습니다: {segment.Name}");
+                continue;
             }
 
-            Undo.RegisterCreatedObjectUndo(road, "도로 생성");
+            GameObject groupRoot = new GameObject($"Road_{segment.Name}");
+            groupRoot.transform.SetParent(_roadRoot);
+            groupRoot.transform.position = Vector3.zero;
+            Undo.RegisterCreatedObjectUndo(groupRoot, "도로 그룹 생성");
+
+            Vector3 direction = segment.GetDirectionVector();
+            Vector3 startPosition = segment.GetStartPosition();
+
+            for (int i = 0; i < segment.TileCount; i++)
+            {
+                GameObject tile = PrefabUtility.InstantiatePrefab(segment.Prefab_Road) as GameObject;
+                if (tile == null)
+                {
+                    continue;
+                }
+
+                tile.transform.SetParent(groupRoot.transform);
+                tile.transform.position = startPosition + direction * (tileLength * i);
+                tile.transform.rotation = GetTileRotation(segment.Direction);
+
+                Undo.RegisterCreatedObjectUndo(tile, "도로 타일 생성");
+                totalTiles++;
+            }
         }
 
-        Debug.Log($"[맵 생성기] 도로 {_layout.RoadSegments.Count}개 생성");
+        Debug.Log($"[맵 생성기] 도로 {_layout.RoadSegments.Count}구간 / 타일 {totalTiles}개 생성");
     }
+
+    private float GetPrefabLength(GameObject prefab)
+    {
+        Renderer[] renderers = prefab.GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0)
+        {
+            return 0f;
+        }
+
+        Bounds bounds = renderers[0].bounds;
+        for (int i = 1; i < renderers.Length; i++)
+        {
+            bounds.Encapsulate(renderers[i].bounds);
+        }
+
+        return bounds.size.z;
+    }
+
+    private Quaternion GetTileRotation(RoadDirection direction)
+    {
+        if (direction == RoadDirection.Horizontal)
+        {
+            return Quaternion.Euler(0f, 90f, 0f);
+        }
+        return Quaternion.identity;
+    }
+
+    // ─────────────────────────────────────────────
+    // 오브젝트 배치
+    // ─────────────────────────────────────────────
 
     private void GenerateObjects()
     {
@@ -168,6 +220,8 @@ public class MapGeneratorWindow : EditorWindow
         instance.transform.localScale = Vector3.one * entry.VisualScale;
         instance.transform.rotation = CalculateRotation(position, entry);
 
+        GameObjectUtility.SetStaticEditorFlags(instance, 0);
+
         AbsorbableObject absorbable = instance.GetComponent<AbsorbableObject>();
         if (absorbable != null)
         {
@@ -206,7 +260,7 @@ public class MapGeneratorWindow : EditorWindow
                 continue;
             }
 
-            // 크기별 목표 거리에서 벗어나면 재시도 (여유 폭 허용)
+            // 크기별 목표 거리에서 크게 벗어나면 재시도
             if (Mathf.Abs(roadDistance - targetDistance) > targetDistance * 0.8f)
             {
                 continue;
@@ -238,13 +292,24 @@ public class MapGeneratorWindow : EditorWindow
         return _layout.BuildingMinDistance + sizeValue * 1.5f;
     }
 
+    // ─────────────────────────────────────────────
+    // 도로 기준 계산
+    // ─────────────────────────────────────────────
+
     private float GetNearestRoadDistance(Vector3 position)
     {
         float nearest = float.MaxValue;
 
         foreach (RoadSegment segment in _layout.RoadSegments)
         {
-            float distance = segment.GetDistanceFromCenterLine(position) - segment.Width * 0.5f;
+            if (segment.Prefab_Road == null)
+            {
+                continue;
+            }
+
+            float tileLength = GetPrefabLength(segment.Prefab_Road);
+            float distance = segment.GetDistanceFromCenterLine(position, tileLength) - segment.Width * 0.5f;
+
             if (distance < nearest)
             {
                 nearest = distance;
@@ -261,7 +326,14 @@ public class MapGeneratorWindow : EditorWindow
 
         foreach (RoadSegment segment in _layout.RoadSegments)
         {
-            float distance = segment.GetDistanceFromCenterLine(position);
+            if (segment.Prefab_Road == null)
+            {
+                continue;
+            }
+
+            float tileLength = GetPrefabLength(segment.Prefab_Road);
+            float distance = segment.GetDistanceFromCenterLine(position, tileLength);
+
             if (distance < nearestDistance)
             {
                 nearestDistance = distance;
@@ -274,7 +346,6 @@ public class MapGeneratorWindow : EditorWindow
 
     private bool IsNearIntersection(Vector3 position)
     {
-        // 세로 도로와 가로 도로가 만나는 지점 근처인지 검사
         foreach (RoadSegment a in _layout.RoadSegments)
         {
             if (a.Direction != RoadDirection.Vertical)
@@ -289,7 +360,7 @@ public class MapGeneratorWindow : EditorWindow
                     continue;
                 }
 
-                Vector3 crossPoint = new Vector3(a.CenterX, 0f, b.CenterZ);
+                Vector3 crossPoint = new Vector3(a.StartX, 0f, b.StartZ);
                 Vector3 diff = position - crossPoint;
                 diff.y = 0f;
 
@@ -311,7 +382,7 @@ public class MapGeneratorWindow : EditorWindow
             return Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
         }
 
-        // 차량(sizeValue 3~4)은 도로와 나란히
+        // 차량은 도로와 나란히
         if (entry.SizeValue >= 3 && entry.SizeValue <= 8)
         {
             Vector3 roadForward = nearest.GetForwardDirection();
@@ -334,11 +405,11 @@ public class MapGeneratorWindow : EditorWindow
     {
         if (segment.Direction == RoadDirection.Vertical)
         {
-            float dx = segment.CenterX - position.x;
+            float dx = segment.StartX - position.x;
             return new Vector3(Mathf.Sign(dx), 0f, 0f);
         }
 
-        float dz = segment.CenterZ - position.z;
+        float dz = segment.StartZ - position.z;
         return new Vector3(0f, 0f, Mathf.Sign(dz));
     }
 
@@ -358,6 +429,10 @@ public class MapGeneratorWindow : EditorWindow
         }
         return true;
     }
+
+    // ─────────────────────────────────────────────
+    // 루트 관리
+    // ─────────────────────────────────────────────
 
     private void PrepareRoots()
     {

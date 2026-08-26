@@ -5,8 +5,6 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float _baseDistance = 11f;
     [SerializeField] private float _baseHeight = 6f;
     [SerializeField] private float _lookAtHeightOffset = 2f;
-    [SerializeField] private float _zoomPerTier = 0.4f;
-    [SerializeField] private float _maxZoomMultiplier = 2.6f;
     [SerializeField] private float _zoomLerpSpeed = 1.5f;
 
     private Transform _target;
@@ -30,8 +28,7 @@ public class CameraFollow : MonoBehaviour
 
     private void OnChangeTier(int tierNumber)
     {
-        float zoom = 1f + _zoomPerTier * (tierNumber - 1);
-        _targetZoom = Mathf.Min(zoom, _maxZoomMultiplier);
+        _targetZoom = 1f;
     }
 
     private void LateUpdate()

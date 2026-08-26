@@ -142,9 +142,7 @@ public class TruckStatus : MonoBehaviour
         TruckSize = tier.SizeValue;
         CurrentTierNumber = _tierIndex + 1;
 
-        // 티어당 35%씩 스케일 업
-        float scale = 1f + 0.35f * _tierIndex;
-        transform.localScale = new Vector3(scale, scale, scale);
+        // 트럭 크기는 고정 — 흡수 상한만 상승 (속도감 유지)
 
         Debug.Log($"[TruckStatus] 티어 {CurrentTierNumber} / 흡수 상한 {TruckSize} / 누적 점수 {_currentScore}");
 

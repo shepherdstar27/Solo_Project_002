@@ -12,9 +12,19 @@ public class StageLoader : SingletonBase<StageLoader>
 
         // 2. 트럭
         GameObject truck = await Addressables.InstantiateAsync("Truck").ToUniTask();
-        TruckStatus status = truck.GetComponent<TruckStatus>();
-        TruckController controller = truck.GetComponent<TruckController>();
-        TruckInput input = truck.GetComponent<TruckInput>();
+        TruckReference truckReference = truck.GetComponent<TruckReference>();
+
+        if (truckReference == null)
+        {
+            Debug.LogError("[StageLoader] Truck 프리팹에 TruckReference가 없습니다");
+            return;
+        }
+
+        TruckStatus status = truckReference.Status;
+        TruckController controller = truckReference.Controller;
+        TruckInput input = truckReference.Input;
+
+        status.Initialize();
 
         //전송 문구 뷰
         TransferLogView transferLogView = canvas.GetComponentInChildren<TransferLogView>();
@@ -43,28 +53,16 @@ public class StageLoader : SingletonBase<StageLoader>
 
         status.Initialize();
 
-        // 3. 카메라 연결 (Main Camera에 CameraFollow 부착 전제)
+        // 3. 카메라 연결
         CameraFollow cameraFollow = Camera.main.GetComponent<CameraFollow>();
         if (cameraFollow != null)
         {
-            cameraFollow.SetTarget(truck.transform, status, input);
+            cameraFollow.SetTarget(truckReference.BodyTransform, status, input);
             controller.SetCamera(Camera.main.transform);
         }
         else
         {
             Debug.LogError("[StageLoader] Main Camera에 CameraFollow가 없습니다");
-        }
-
-        CameraShaker shaker = Camera.main.GetComponent<CameraShaker>();
-        if (shaker != null)
-        {
-            AbsorbFeedbackManager.Instance.SetCameraShaker(shaker);
-        }
-
-        RectTransform popupRoot = canvas.transform.Find("Panel_PopupRoot") as RectTransform;
-        if (popupRoot != null)
-        {
-            ScorePopupSpawner.Instance.SetRoot(popupRoot);
         }
 
 

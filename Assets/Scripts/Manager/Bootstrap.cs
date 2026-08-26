@@ -11,7 +11,6 @@ public class Bootstrap : MonoBehaviour
 
     private async UniTask InitializeAsync()
     {
-        // 매니저 프리팹 동적 생성
         GameObject managers = await Addressables.InstantiateAsync("Managers").ToUniTask();
         if (managers == null)
         {
@@ -20,7 +19,34 @@ public class Bootstrap : MonoBehaviour
         }
 
         GameDataManager.Instance.LoadAllData();
-        await StageLoader.Instance.LoadStageAsync();
 
+        GameObject environment = await Addressables.InstantiateAsync("Environment").ToUniTask();
+        if (environment == null)
+        {
+            Debug.LogError("[Bootstrap] Environment 프리팹 로드 실패");
+            return;
+        }
+
+        MainMenuUI mainMenu = await UIManager.Instance.OpenUIAsync<MainMenuUI>(UIAddress.MainMenu);
+        if (mainMenu == null)
+        {
+            return;
+        }
+
+        mainMenu.OnClickStartGame += OnClickStartGame;
+        AudioManager.Instance.PlayMenuBgm();
+    }
+
+    private void OnClickStartGame()
+    {
+        StartGameAsync().Forget();
+    }
+
+    private async UniTask StartGameAsync()
+    {
+        UIManager.Instance.CloseUI(UIAddress.MainMenu);
+        AudioManager.Instance.PlayGameBgm();
+
+        await StageLoader.Instance.LoadStageAsync();
     }
 }

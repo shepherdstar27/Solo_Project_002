@@ -12,6 +12,17 @@ public class AbsorbFeedbackManager : SingletonBase<AbsorbFeedbackManager>
 
     private CameraShaker _cameraShaker;
 
+
+    private void Awake()
+    {
+        if (AudioSource_Absorb != null)
+        {
+            AudioManager.Instance.RegisterSfxSource(AudioSource_Absorb);
+        }
+    }
+
+
+
     public void SetCameraShaker(CameraShaker shaker)
     {
         _cameraShaker = shaker;

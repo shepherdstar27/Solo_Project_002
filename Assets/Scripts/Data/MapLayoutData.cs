@@ -12,7 +12,6 @@ public class MapLayoutData : ScriptableObject
 
     [Header("도로")]
     public List<RoadSegment> RoadSegments = new List<RoadSegment>();
-    public Material Material_Road;
 
     [Header("배치 규칙")]
     public float SidewalkDistance = 8f;        // 인도 (작은 대상)

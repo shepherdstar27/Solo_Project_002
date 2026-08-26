@@ -1,143 +1,140 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class TruckController : MonoBehaviour
 {
-    [SerializeField] private float _maxSpeed = 14f;
-    [SerializeField] private float _maxReverseSpeed = -5f;
-    [SerializeField] private float _accelRate = 9f;
-    [SerializeField] private float _reverseAccelRate = 5f;
-    [SerializeField] private float _naturalDecelRate = 4f;
-    [SerializeField] private float _brakeRate = 12f;
+    [SerializeField] private List<TruckWheel> Wheels = new List<TruckWheel>();
 
-    [SerializeField] private float _steerSpeedDegree = 90f;
-    [SerializeField] private float _steerMinSpeedRatio = 0.15f;
-    [SerializeField] private float _rotatePenaltyPerTier = 0.06f;
+    [Header("구동")]
+    [SerializeField] private float _maxMotorTorque = 2200f;
+    [SerializeField] private float _maxReverseTorque = 1200f;
+    [SerializeField] private float _brakeTorque = 4000f;
+    [SerializeField] private float _idleBrakeTorque = 300f;
+    [SerializeField] private float _maxSpeedKph = 70f;
+
+    [Header("조향")]
+    [SerializeField] private float _maxSteerAngle = 28f;
+    [SerializeField] private float _steerSpeed = 5f;
+    [SerializeField] private float _steerSpeedReduction = 0.5f;
+
+    [Header("안정화")]
+    [SerializeField] private float _downForce = 120f;
+    [SerializeField] private Vector3 _centerOfMassOffset = new Vector3(0f, -0.6f, 0f);
+
     [SerializeField] private float _bounceSpeedRatio = 0.3f;
 
     private TruckInput _input;
     private TruckStatus _status;
     private Rigidbody _rigidbody;
 
-    private float _currentSpeed;
-    private float _currentSteerSpeed;
+    private float _currentSteerAngle;
 
-    public float CurrentSpeed { get { return _currentSpeed; } }
+    public float CurrentSpeed { get { return _rigidbody != null ? _rigidbody.linearVelocity.magnitude : 0f; } }
+    public float CurrentSpeedKph { get { return CurrentSpeed * 3.6f; } }
 
     private void Awake()
     {
         _status = GetComponent<TruckStatus>();
         _input = GetComponent<TruckInput>();
         _rigidbody = GetComponent<Rigidbody>();
-        _currentSteerSpeed = _steerSpeedDegree;
-        _currentSpeed = 0f;
+
+        // 무게중심을 낮춰야 전복되지 않는다
+        _rigidbody.centerOfMass += _centerOfMassOffset;
     }
 
     public void SetCamera(Transform cameraTransform)
     {
-        _status.OnChangeTier += OnChangeTier;
-    }
-
-    private void OnChangeTier(int tierNumber)
-    {
-        float penalty = 1f - _rotatePenaltyPerTier * (tierNumber - 1);
-        _currentSteerSpeed = _steerSpeedDegree * Mathf.Max(penalty, 0.6f);
-    }
-
-    private void Update()
-    {
-        UpdateSpeed();
-        SteerTruck();
+        // 차량 물리에서는 카메라 기준 이동을 쓰지 않음 (인터페이스 유지)
     }
 
     private void FixedUpdate()
     {
-        MoveForward();
+        UpdateSteer();
+        UpdateMotor();
+        ApplyDownForce();
+        UpdateWheelMesh();
     }
 
-    private void UpdateSpeed()
+    private void UpdateSteer()
     {
-        if (_input.IsBraking)
+        // 속도가 빠를수록 조향각을 줄여 안정성 확보
+        float speedRatio = Mathf.Clamp01(CurrentSpeedKph / _maxSpeedKph);
+        float limitAngle = _maxSteerAngle * (1f - speedRatio * _steerSpeedReduction);
+
+        float targetAngle = _input.MoveInput.x * limitAngle;
+        _currentSteerAngle = Mathf.Lerp(_currentSteerAngle, targetAngle, _steerSpeed * Time.fixedDeltaTime);
+
+        foreach (TruckWheel wheel in Wheels)
         {
-            if (_currentSpeed > 0f)
+            if (wheel.IsSteerWheel == false || wheel.WheelCollider_Wheel == null)
             {
-                _currentSpeed -= _brakeRate * Time.deltaTime;
+                continue;
+            }
+            wheel.WheelCollider_Wheel.steerAngle = _currentSteerAngle;
+        }
+    }
+
+    private void UpdateMotor()
+    {
+        float motorTorque = 0f;
+        float brakeTorque = 0f;
+
+        bool isMovingForward = IsMovingForward();
+
+        if (_input.IsAccelerating)
+        {
+            if (CurrentSpeedKph < _maxSpeedKph)
+            {
+                motorTorque = _maxMotorTorque;
+            }
+        }
+        else if (_input.IsBraking)
+        {
+            if (isMovingForward && CurrentSpeedKph > 3f)
+            {
+                brakeTorque = _brakeTorque;   // 전진 중이면 제동
             }
             else
             {
-                _currentSpeed -= _reverseAccelRate * Time.deltaTime;
+                motorTorque = -_maxReverseTorque;   // 정지 후에는 후진
             }
-        }
-        else if (_input.IsAccelerating)
-        {
-            _currentSpeed += _accelRate * Time.deltaTime;
         }
         else
         {
-            ApplyNaturalDecel();
+            brakeTorque = _idleBrakeTorque;   // 엔진 브레이크
         }
 
-        _currentSpeed = Mathf.Clamp(_currentSpeed, _maxReverseSpeed, _maxSpeed);
-    }
-
-    private void ApplyNaturalDecel()
-    {
-        if (_currentSpeed > 0f)
+        foreach (TruckWheel wheel in Wheels)
         {
-            _currentSpeed -= _naturalDecelRate * Time.deltaTime;
-            if (_currentSpeed < 0f)
+            if (wheel.WheelCollider_Wheel == null)
             {
-                _currentSpeed = 0f;
+                continue;
             }
-            return;
-        }
 
-        if (_currentSpeed < 0f)
-        {
-            _currentSpeed += _naturalDecelRate * Time.deltaTime;
-            if (_currentSpeed > 0f)
+            if (wheel.IsDriveWheel)
             {
-                _currentSpeed = 0f;
+                wheel.WheelCollider_Wheel.motorTorque = motorTorque;
             }
+            wheel.WheelCollider_Wheel.brakeTorque = brakeTorque;
         }
     }
 
-    private void SteerTruck()
+    private bool IsMovingForward()
     {
-        float steerInput = _input.MoveInput.x;
-        if (Mathf.Abs(steerInput) < 0.01f)
-        {
-            return;
-        }
-
-        float speedRatio = Mathf.Abs(_currentSpeed) / _maxSpeed;
-        if (speedRatio < _steerMinSpeedRatio)
-        {
-            return;
-        }
-
-        float steerFactor = Mathf.Clamp01(speedRatio);
-
-        if (_currentSpeed < 0f)
-        {
-            steerInput = -steerInput;
-        }
-
-        float angle = steerInput * _currentSteerSpeed * steerFactor * Time.deltaTime;
-        transform.Rotate(Vector3.up, angle, Space.World);
+        return Vector3.Dot(_rigidbody.linearVelocity, transform.forward) > 0f;
     }
 
-    private void MoveForward()
+    private void ApplyDownForce()
     {
-        Vector3 velocity = transform.forward * _currentSpeed;
-        velocity.y = _rigidbody.linearVelocity.y;
-        _rigidbody.linearVelocity = velocity;
+        // 접지력 확보 (속도에 비례)
+        _rigidbody.AddForce(-transform.up * (_downForce * CurrentSpeed));
     }
 
-    private void OnDestroy()
+    private void UpdateWheelMesh()
     {
-        if (_status != null)
+        foreach (TruckWheel wheel in Wheels)
         {
-            _status.OnChangeTier -= OnChangeTier;
+            wheel.UpdateMeshTransform();
         }
     }
 
@@ -151,7 +148,7 @@ public class TruckController : MonoBehaviour
 
         if (_status.IsAbsorbable(target) == false)
         {
-            _currentSpeed *= _bounceSpeedRatio;
+            _rigidbody.linearVelocity *= _bounceSpeedRatio;
         }
     }
 }

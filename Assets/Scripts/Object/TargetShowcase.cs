@@ -49,18 +49,25 @@ public class TargetShowcase : MonoBehaviour
     {
         model.transform.localPosition = Vector3.zero;
         model.transform.localRotation = Quaternion.identity;
+        model.transform.localScale = Vector3.one;
 
-        // 크기와 무관하게 일정한 크기로 보이도록 정규화
+        SetLayerRecursive(model, _showcaseLayer);
+        DisableComponents(model);
+
+        // 1. 크기 정규화
         Bounds bounds = CalculateBounds(model);
         float maxSide = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z);
+
         if (maxSide > 0.001f)
         {
             float scale = _displaySize / maxSide;
             model.transform.localScale = Vector3.one * scale;
         }
 
-        SetLayerRecursive(model, _showcaseLayer);
-        DisableComponents(model);
+        // 2. 스케일 적용 후 중심을 다시 계산해 원점으로 보정
+        Bounds scaledBounds = CalculateBounds(model);
+        Vector3 offset = Transform_ModelRoot.position - scaledBounds.center;
+        model.transform.position += offset;
     }
 
     private Bounds CalculateBounds(GameObject model)
