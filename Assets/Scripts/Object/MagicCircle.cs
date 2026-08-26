@@ -12,6 +12,7 @@ public class MagicCircle : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         AbsorbableObject target = other.GetComponent<AbsorbableObject>();
+        Debug.Log($"[MagicCircle] 접촉: {other.name} / AbsorbableObject {target != null}");
         if (target == null || target.IsAbsorbed())
         {
             return;

@@ -69,9 +69,9 @@ public class StageLoader : SingletonBase<StageLoader>
 
 
         // 4. 테스트 타겟 스포너
-        GameObject spawnerObject = await Addressables.InstantiateAsync("MapSpawner").ToUniTask();
-        MapSpawner mapSpawner = spawnerObject.GetComponent<MapSpawner>();
-        await mapSpawner.SpawnMapAsync();
+        //GameObject spawnerObject = await Addressables.InstantiateAsync("MapSpawner").ToUniTask();
+        //MapSpawner mapSpawner = spawnerObject.GetComponent<MapSpawner>();
+        //await mapSpawner.SpawnMapAsync();
 
 
         // 5. 디펜스 세션 시작

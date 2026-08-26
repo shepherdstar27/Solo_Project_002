@@ -1,0 +1,234 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 786e9b57c8f858c43be50733f7188bbc, type: 3}
+  m_Name: MapLayout_01
+  m_EditorClassIdentifier: Assembly-CSharp::MapLayoutData
+  MapMinX: -150
+  MapMaxX: 150
+  MapMinZ: -320
+  MapMaxZ: 560
+  RoadSegments:
+  - Name: main
+    Direction: 0
+    CenterX: 0
+    CenterZ: 120
+    Length: 900
+    Width: 34
+  - Name: Cross_01
+    Direction: 1
+    CenterX: 0
+    CenterZ: -100
+    Length: 300
+    Width: 24
+  - Name: Cross_02
+    Direction: 1
+    CenterX: 0
+    CenterZ: 120
+    Length: 300
+    Width: 24
+  - Name: Cross_03
+    Direction: 1
+    CenterX: 0
+    CenterZ: 340
+    Length: 300
+    Width: 24
+  - Name: Cross_04
+    Direction: 1
+    CenterX: 0
+    CenterZ: -220
+    Length: 300
+    Width: 6
+  - Name: Cross_05
+    Direction: 1
+    CenterX: 0
+    CenterZ: 0
+    Length: 300
+    Width: 6
+  - Name: Cross_05
+    Direction: 1
+    CenterX: 0
+    CenterZ: 220
+    Length: 300
+    Width: 6
+  - Name: Cross_05
+    Direction: 1
+    CenterX: 0
+    CenterZ: 440
+    Length: 300
+    Width: 6
+  Material_Road: {fileID: 2100000, guid: 3a253ba5e005a5b4690a813c29aff73e, type: 2}
+  SidewalkDistance: 8
+  ParkingDistance: 16
+  BuildingMinDistance: 50
+  IntersectionClearRadius: 30
+  MinGapMultiplier: 1
+  Zones:
+  - ZoneName: 1
+    MinZ: -320
+    MaxZ: -100
+    Targets:
+    - Prefab_Target: {fileID: 1227347111007792662, guid: 17e7ca4f7c8b30e49afaa0c5d80b6056, type: 3}
+      TargetId: Target_01
+      SizeValue: 1
+      Score: 1
+      VisualScale: 3
+      Count: 50
+    - Prefab_Target: {fileID: 1227347111007792662, guid: 17e7ca4f7c8b30e49afaa0c5d80b6056, type: 3}
+      TargetId: Target_02
+      SizeValue: 1
+      Score: 1
+      VisualScale: 2
+      Count: 50
+    - Prefab_Target: {fileID: 2738688504400530325, guid: 4a873e60b84e4df4ba1451cea2bddbd3, type: 3}
+      TargetId: Target_03
+      SizeValue: 2
+      Score: 2
+      VisualScale: 5
+      Count: 10
+    - Prefab_Target: {fileID: 5579085350359998583, guid: ff8e6a01b4362744395cbddb3b124587, type: 3}
+      TargetId: Target_04
+      SizeValue: 4
+      Score: 4
+      VisualScale: 8
+      Count: 10
+    - Prefab_Target: {fileID: 4832907602962289505, guid: 45861ab70851e6a4193bea36f38bd80e, type: 3}
+      TargetId: Target_05
+      SizeValue: 8
+      Score: 8
+      VisualScale: 13
+      Count: 10
+    - Prefab_Target: {fileID: 8737856774408570572, guid: ad665718f7b1e4a4ab2cc66d7c87c0bc, type: 3}
+      TargetId: Target_06
+      SizeValue: 16
+      Score: 16
+      VisualScale: 20
+      Count: 10
+  - ZoneName: 2
+    MinZ: -100
+    MaxZ: 120
+    Targets:
+    - Prefab_Target: {fileID: 1227347111007792662, guid: 17e7ca4f7c8b30e49afaa0c5d80b6056, type: 3}
+      TargetId: Target_01
+      SizeValue: 1
+      Score: 1
+      VisualScale: 3
+      Count: 50
+    - Prefab_Target: {fileID: 1227347111007792662, guid: 17e7ca4f7c8b30e49afaa0c5d80b6056, type: 3}
+      TargetId: Target_02
+      SizeValue: 1
+      Score: 1
+      VisualScale: 2
+      Count: 50
+    - Prefab_Target: {fileID: 2738688504400530325, guid: 4a873e60b84e4df4ba1451cea2bddbd3, type: 3}
+      TargetId: Target_03
+      SizeValue: 2
+      Score: 2
+      VisualScale: 5
+      Count: 10
+    - Prefab_Target: {fileID: 5579085350359998583, guid: ff8e6a01b4362744395cbddb3b124587, type: 3}
+      TargetId: Target_04
+      SizeValue: 4
+      Score: 4
+      VisualScale: 8
+      Count: 10
+    - Prefab_Target: {fileID: 4832907602962289505, guid: 45861ab70851e6a4193bea36f38bd80e, type: 3}
+      TargetId: Target_05
+      SizeValue: 8
+      Score: 8
+      VisualScale: 13
+      Count: 10
+    - Prefab_Target: {fileID: 8737856774408570572, guid: ad665718f7b1e4a4ab2cc66d7c87c0bc, type: 3}
+      TargetId: Target_06
+      SizeValue: 16
+      Score: 16
+      VisualScale: 20
+      Count: 10
+  - ZoneName: 3
+    MinZ: 120
+    MaxZ: 340
+    Targets:
+    - Prefab_Target: {fileID: 1227347111007792662, guid: 17e7ca4f7c8b30e49afaa0c5d80b6056, type: 3}
+      TargetId: Target_01
+      SizeValue: 1
+      Score: 1
+      VisualScale: 3
+      Count: 50
+    - Prefab_Target: {fileID: 1227347111007792662, guid: 17e7ca4f7c8b30e49afaa0c5d80b6056, type: 3}
+      TargetId: Target_02
+      SizeValue: 1
+      Score: 1
+      VisualScale: 2
+      Count: 50
+    - Prefab_Target: {fileID: 2738688504400530325, guid: 4a873e60b84e4df4ba1451cea2bddbd3, type: 3}
+      TargetId: Target_03
+      SizeValue: 2
+      Score: 2
+      VisualScale: 5
+      Count: 10
+    - Prefab_Target: {fileID: 5579085350359998583, guid: ff8e6a01b4362744395cbddb3b124587, type: 3}
+      TargetId: Target_04
+      SizeValue: 4
+      Score: 4
+      VisualScale: 8
+      Count: 10
+    - Prefab_Target: {fileID: 4832907602962289505, guid: 45861ab70851e6a4193bea36f38bd80e, type: 3}
+      TargetId: Target_05
+      SizeValue: 8
+      Score: 8
+      VisualScale: 13
+      Count: 10
+    - Prefab_Target: {fileID: 8737856774408570572, guid: ad665718f7b1e4a4ab2cc66d7c87c0bc, type: 3}
+      TargetId: Target_06
+      SizeValue: 16
+      Score: 16
+      VisualScale: 20
+      Count: 10
+  - ZoneName: 3
+    MinZ: 340
+    MaxZ: 560
+    Targets:
+    - Prefab_Target: {fileID: 1227347111007792662, guid: 17e7ca4f7c8b30e49afaa0c5d80b6056, type: 3}
+      TargetId: Target_01
+      SizeValue: 1
+      Score: 1
+      VisualScale: 3
+      Count: 50
+    - Prefab_Target: {fileID: 1227347111007792662, guid: 17e7ca4f7c8b30e49afaa0c5d80b6056, type: 3}
+      TargetId: Target_02
+      SizeValue: 1
+      Score: 1
+      VisualScale: 2
+      Count: 50
+    - Prefab_Target: {fileID: 2738688504400530325, guid: 4a873e60b84e4df4ba1451cea2bddbd3, type: 3}
+      TargetId: Target_03
+      SizeValue: 2
+      Score: 2
+      VisualScale: 5
+      Count: 10
+    - Prefab_Target: {fileID: 5579085350359998583, guid: ff8e6a01b4362744395cbddb3b124587, type: 3}
+      TargetId: Target_04
+      SizeValue: 4
+      Score: 4
+      VisualScale: 8
+      Count: 10
+    - Prefab_Target: {fileID: 4832907602962289505, guid: 45861ab70851e6a4193bea36f38bd80e, type: 3}
+      TargetId: Target_05
+      SizeValue: 8
+      Score: 8
+      VisualScale: 13
+      Count: 10
+    - Prefab_Target: {fileID: 8737856774408570572, guid: ad665718f7b1e4a4ab2cc66d7c87c0bc, type: 3}
+      TargetId: Target_06
+      SizeValue: 16
+      Score: 16
+      VisualScale: 20
+      Count: 10

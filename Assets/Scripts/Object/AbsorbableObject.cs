@@ -5,19 +5,21 @@ using UnityEngine;
 public class AbsorbableObject : MonoBehaviour
 {
     [SerializeField] private float _absorbDuration = 0.35f;
+    [SerializeField] private int _sizeValue = 1;
+    [SerializeField] private int _score = 1;
+    [SerializeField] private string _poolKey;
 
-    public int SizeValue { get; private set; }
-    public int Score { get; private set; }
-
-    public string PoolKey { get; private set; }
+    public int SizeValue { get { return _sizeValue; } }
+    public int Score { get { return _score; } }
+    public string PoolKey { get { return _poolKey; } }
 
     private bool _isAbsorbed;
 
     public void Initialize(int sizeValue, int score, string poolKey)
     {
-        SizeValue = sizeValue;
-        Score = score;
-        PoolKey = poolKey;
+        _sizeValue = sizeValue;
+        _score = score;
+        _poolKey = poolKey;
         _isAbsorbed = false;
 
         Collider bodyCollider = GetComponent<Collider>();
@@ -25,6 +27,14 @@ public class AbsorbableObject : MonoBehaviour
         {
             bodyCollider.enabled = true;
         }
+    }
+
+    // 에디터 배치용
+    public void SetupForEditor(int sizeValue, int score, string poolKey)
+    {
+        _sizeValue = sizeValue;
+        _score = score;
+        _poolKey = poolKey;
     }
 
     public bool IsAbsorbed()
@@ -51,24 +61,43 @@ public class AbsorbableObject : MonoBehaviour
 
     private async UniTask PlayAbsorbAsync(Transform absorbPoint)
     {
+        float duration = Mathf.Max(_absorbDuration, 0.2f);
+
         Vector3 startPosition = transform.position;
         Vector3 startScale = transform.localScale;
         float elapsed = 0f;
+        int frameCount = 0;
 
-        while (elapsed < _absorbDuration)
+        Debug.Log($"[Absorb] 연출 시작 / 스케일 {startScale} / 위치 {startPosition}");
+
+        while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / _absorbDuration);
+            frameCount++;
+            float t = Mathf.Clamp01(elapsed / duration);
 
-            // 축소 + 나선(자전) + 흡수 지점으로 이동
             transform.position = Vector3.Lerp(startPosition, absorbPoint.position, t);
             transform.localScale = startScale * (1f - t);
             transform.Rotate(Vector3.up, 720f * Time.deltaTime, Space.World);
 
+            if (frameCount % 5 == 0)
+            {
+                Debug.Log($"[Absorb] {frameCount}프레임 / t {t:F2} / 스케일 {transform.localScale.x:F2} / 위치 {transform.position}");
+            }
+
             await UniTask.Yield();
         }
 
-        transform.localScale = startScale;   // 풀 반환 전 스케일 복원
-        ObjectPoolManager.Instance.ReturnObject(PoolKey, gameObject);
+        Debug.Log($"[Absorb] 연출 종료 / 총 {frameCount}프레임 / poolKey '{_poolKey}'");
+
+        transform.localScale = startScale;
+
+        if (string.IsNullOrEmpty(_poolKey))
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        ObjectPoolManager.Instance.ReturnObject(_poolKey, gameObject);
     }
 }
