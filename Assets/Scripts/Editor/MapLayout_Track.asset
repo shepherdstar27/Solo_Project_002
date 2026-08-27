@@ -1,0 +1,238 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 786e9b57c8f858c43be50733f7188bbc, type: 3}
+  m_Name: MapLayout_Track
+  m_EditorClassIdentifier: Assembly-CSharp::MapLayoutData
+  MapMinX: -150
+  MapMaxX: 150
+  MapMinZ: -320
+  MapMaxZ: 3500
+  RoadSegments:
+  - Name: 1
+    Direction: 0
+    Prefab_Road: {fileID: 6134741366318156252, guid: 835d09747e55e49458811c8ca40910d2, type: 3}
+    StartX: 0
+    StartZ: -300
+    TileCount: 35
+    Width: 40
+    StartY: 300
+    HeightDrop: 6
+    StartYaw: 0
+    YawPerTile: 6
+    IsConnectToPrevious: 0
+    IsUseMesh: 1
+    MeshSubdivision: 4
+    Material_Road: {fileID: 2100000, guid: b6fddd89f90f47d4fa5764262f84f6a0, type: 2}
+    RoadTextureLength: 20
+    Material_Wall: {fileID: 2100000, guid: dbeb7b6c7b46fd140b9cc53d0dfbfb01, type: 2}
+    WallHeight: 3
+    WallThickness: 0.6
+    WallTextureLength: 10
+    SeamOverlap: 1
+    Prefab_Wall: {fileID: 5427886293747706320, guid: 211ee66cf2cc2f444b0ad19bae4e999a, type: 3}
+    IsBuildWall: 1
+    WallOffset: 22
+    WallHeightOffset: 0
+    IsStretchWall: 1
+  - Name: 2
+    Direction: 0
+    Prefab_Road: {fileID: 6134741366318156252, guid: 835d09747e55e49458811c8ca40910d2, type: 3}
+    StartX: 0
+    StartZ: -300
+    TileCount: 35
+    Width: 40
+    StartY: 300
+    HeightDrop: 6
+    StartYaw: 0
+    YawPerTile: -6
+    IsConnectToPrevious: 1
+    IsUseMesh: 1
+    MeshSubdivision: 4
+    Material_Road: {fileID: 2100000, guid: b6fddd89f90f47d4fa5764262f84f6a0, type: 2}
+    RoadTextureLength: 20
+    Material_Wall: {fileID: 2100000, guid: dbeb7b6c7b46fd140b9cc53d0dfbfb01, type: 2}
+    WallHeight: 3
+    WallThickness: 0.6
+    WallTextureLength: 10
+    SeamOverlap: 1
+    Prefab_Wall: {fileID: 5427886293747706320, guid: 211ee66cf2cc2f444b0ad19bae4e999a, type: 3}
+    IsBuildWall: 1
+    WallOffset: 22
+    WallHeightOffset: 0
+    IsStretchWall: 1
+  - Name: 3
+    Direction: 0
+    Prefab_Road: {fileID: 6134741366318156252, guid: 835d09747e55e49458811c8ca40910d2, type: 3}
+    StartX: 0
+    StartZ: -300
+    TileCount: 1
+    Width: 40
+    StartY: 300
+    HeightDrop: 6
+    StartYaw: 0
+    YawPerTile: 0
+    IsConnectToPrevious: 1
+    IsUseMesh: 1
+    MeshSubdivision: 4
+    Material_Road: {fileID: 2100000, guid: b6fddd89f90f47d4fa5764262f84f6a0, type: 2}
+    RoadTextureLength: 20
+    Material_Wall: {fileID: 2100000, guid: dbeb7b6c7b46fd140b9cc53d0dfbfb01, type: 2}
+    WallHeight: 3
+    WallThickness: 0.6
+    WallTextureLength: 10
+    SeamOverlap: 1
+    Prefab_Wall: {fileID: 5427886293747706320, guid: 211ee66cf2cc2f444b0ad19bae4e999a, type: 3}
+    IsBuildWall: 1
+    WallOffset: 22
+    WallHeightOffset: 0
+    IsStretchWall: 1
+  - Name: 4
+    Direction: 0
+    Prefab_Road: {fileID: 6134741366318156252, guid: 835d09747e55e49458811c8ca40910d2, type: 3}
+    StartX: 0
+    StartZ: -300
+    TileCount: 9
+    Width: 40
+    StartY: 300
+    HeightDrop: 6
+    StartYaw: 0
+    YawPerTile: 0
+    IsConnectToPrevious: 1
+    IsUseMesh: 0
+    MeshSubdivision: 4
+    Material_Road: {fileID: 2100000, guid: b6fddd89f90f47d4fa5764262f84f6a0, type: 2}
+    RoadTextureLength: 20
+    Material_Wall: {fileID: 2100000, guid: dbeb7b6c7b46fd140b9cc53d0dfbfb01, type: 2}
+    WallHeight: 3
+    WallThickness: 0.6
+    WallTextureLength: 10
+    SeamOverlap: 1
+    Prefab_Wall: {fileID: 5427886293747706320, guid: 211ee66cf2cc2f444b0ad19bae4e999a, type: 3}
+    IsBuildWall: 1
+    WallOffset: 22
+    WallHeightOffset: 0
+    IsStretchWall: 1
+  SidewalkDistance: 8
+  ParkingDistance: 16
+  BuildingMinDistance: 26
+  IntersectionClearRadius: 40
+  MinGapMultiplier: 1.5
+  Zones:
+  - ZoneName: 1
+    IsUseCourseRange: 1
+    CourseStart: 0
+    CourseEnd: 0.35
+    MinZ: -320
+    MaxZ: 3000
+    Targets:
+    - Prefab_Target: {fileID: 1227347111007792662, guid: 17e7ca4f7c8b30e49afaa0c5d80b6056, type: 3}
+      TargetId: Target_01
+      SizeValue: 1
+      Score: 1
+      VisualScale: 1
+      Count: 50
+      IsOnRoad: 1
+      RoadSpreadRatio: 0.9
+    - Prefab_Target: {fileID: 2738688504400530325, guid: f078a8650a1033f4ab6142a31987a981, type: 3}
+      TargetId: Target_02
+      SizeValue: 1
+      Score: 1
+      VisualScale: 1
+      Count: 50
+      IsOnRoad: 1
+      RoadSpreadRatio: 0.9
+  - ZoneName: 2
+    IsUseCourseRange: 1
+    CourseStart: 0.35
+    CourseEnd: 0.7
+    MinZ: -320
+    MaxZ: 3000
+    Targets:
+    - Prefab_Target: {fileID: 1227347111007792662, guid: 17e7ca4f7c8b30e49afaa0c5d80b6056, type: 3}
+      TargetId: Target_01
+      SizeValue: 1
+      Score: 1
+      VisualScale: 1
+      Count: 50
+      IsOnRoad: 1
+      RoadSpreadRatio: 0.9
+    - Prefab_Target: {fileID: 2738688504400530325, guid: f078a8650a1033f4ab6142a31987a981, type: 3}
+      TargetId: Target_02
+      SizeValue: 1
+      Score: 1
+      VisualScale: 1
+      Count: 50
+      IsOnRoad: 1
+      RoadSpreadRatio: 0.9
+    - Prefab_Target: {fileID: 2738688504400530325, guid: 4a873e60b84e4df4ba1451cea2bddbd3, type: 3}
+      TargetId: Target_03
+      SizeValue: 1
+      Score: 2
+      VisualScale: 1
+      Count: 30
+      IsOnRoad: 1
+      RoadSpreadRatio: 0.9
+    - Prefab_Target: {fileID: 5579085350359998583, guid: ff8e6a01b4362744395cbddb3b124587, type: 3}
+      TargetId: Target_04
+      SizeValue: 1
+      Score: 4
+      VisualScale: 1
+      Count: 20
+      IsOnRoad: 1
+      RoadSpreadRatio: 0.9
+  - ZoneName: 3
+    IsUseCourseRange: 1
+    CourseStart: 0.7
+    CourseEnd: 1
+    MinZ: -320
+    MaxZ: 3000
+    Targets:
+    - Prefab_Target: {fileID: 1227347111007792662, guid: 17e7ca4f7c8b30e49afaa0c5d80b6056, type: 3}
+      TargetId: Target_01
+      SizeValue: 1
+      Score: 1
+      VisualScale: 1
+      Count: 50
+      IsOnRoad: 1
+      RoadSpreadRatio: 0.9
+    - Prefab_Target: {fileID: 2738688504400530325, guid: f078a8650a1033f4ab6142a31987a981, type: 3}
+      TargetId: Target_02
+      SizeValue: 1
+      Score: 1
+      VisualScale: 1
+      Count: 50
+      IsOnRoad: 1
+      RoadSpreadRatio: 0.9
+    - Prefab_Target: {fileID: 2738688504400530325, guid: 4a873e60b84e4df4ba1451cea2bddbd3, type: 3}
+      TargetId: Target_03
+      SizeValue: 1
+      Score: 2
+      VisualScale: 1
+      Count: 30
+      IsOnRoad: 1
+      RoadSpreadRatio: 0.9
+    - Prefab_Target: {fileID: 5579085350359998583, guid: ff8e6a01b4362744395cbddb3b124587, type: 3}
+      TargetId: Target_04
+      SizeValue: 1
+      Score: 4
+      VisualScale: 1
+      Count: 20
+      IsOnRoad: 1
+      RoadSpreadRatio: 0.9
+    - Prefab_Target: {fileID: 4832907602962289505, guid: 45861ab70851e6a4193bea36f38bd80e, type: 3}
+      TargetId: Target_05
+      SizeValue: 1
+      Score: 8
+      VisualScale: 1
+      Count: 10
+      IsOnRoad: 1
+      RoadSpreadRatio: 0.9

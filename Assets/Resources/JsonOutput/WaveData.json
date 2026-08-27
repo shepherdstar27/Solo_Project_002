@@ -1,23 +1,121 @@
 [
   {
     "Id": "Wave_01_01",
-    "SpawnTime": 10,
+    "SpawnTime": 8,
     "Monster_List": "Monster_01",
-    "Count_List": "3",
-    "SpawnInterval": 1
+    "Count_List": "4",
+    "SpawnInterval": 0.7
   },
   {
     "Id": "Wave_01_02",
-    "SpawnTime": 60,
-    "Monster_List": "Monster_01",
-    "Count_List": "3",
-    "SpawnInterval": 1
+    "SpawnTime": 26,
+    "Monster_List": "Monster_01,Monster_02",
+    "Count_List": "5,2",
+    "SpawnInterval": 0.6
   },
   {
     "Id": "Wave_01_03",
-    "SpawnTime": 95,
+    "SpawnTime": 44,
+    "Monster_List": "Monster_03,Monster_01",
+    "Count_List": "3,6",
+    "SpawnInterval": 0.5
+  },
+  {
+    "Id": "Wave_02_01",
+    "SpawnTime": 12,
     "Monster_List": "Monster_01",
-    "Count_List": "3",
-    "SpawnInterval": 0.8
+    "Count_List": "5",
+    "SpawnInterval": 0.7
+  },
+  {
+    "Id": "Wave_02_02",
+    "SpawnTime": 36,
+    "Monster_List": "Monster_01,Monster_02",
+    "Count_List": "5,2",
+    "SpawnInterval": 0.7
+  },
+  {
+    "Id": "Wave_02_03",
+    "SpawnTime": 62,
+    "Monster_List": "Monster_01,Monster_02",
+    "Count_List": "6,3",
+    "SpawnInterval": 0.6
+  },
+  {
+    "Id": "Wave_02_04",
+    "SpawnTime": 88,
+    "Monster_List": "Monster_01,Monster_02",
+    "Count_List": "8,4",
+    "SpawnInterval": 0.5
+  },
+  {
+    "Id": "Wave_03_01",
+    "SpawnTime": 12,
+    "Monster_List": "Monster_01",
+    "Count_List": "6",
+    "SpawnInterval": 0.6
+  },
+  {
+    "Id": "Wave_03_02",
+    "SpawnTime": 34,
+    "Monster_List": "Monster_01,Monster_02",
+    "Count_List": "6,3",
+    "SpawnInterval": 0.6
+  },
+  {
+    "Id": "Wave_03_03",
+    "SpawnTime": 58,
+    "Monster_List": "Monster_03,Monster_01",
+    "Count_List": "3,6",
+    "SpawnInterval": 0.5
+  },
+  {
+    "Id": "Wave_03_04",
+    "SpawnTime": 82,
+    "Monster_List": "Monster_01,Monster_02,Monster_03",
+    "Count_List": "8,4,4",
+    "SpawnInterval": 0.45
+  },
+  {
+    "Id": "Wave_03_05",
+    "SpawnTime": 104,
+    "Monster_List": "Monster_03,Monster_02",
+    "Count_List": "6,5",
+    "SpawnInterval": 0.4
+  },
+  {
+    "Id": "Wave_04_01",
+    "SpawnTime": 12,
+    "Monster_List": "Monster_01",
+    "Count_List": "6",
+    "SpawnInterval": 0.6
+  },
+  {
+    "Id": "Wave_04_02",
+    "SpawnTime": 32,
+    "Monster_List": "Monster_01,Monster_02",
+    "Count_List": "6,4",
+    "SpawnInterval": 0.55
+  },
+  {
+    "Id": "Wave_04_03",
+    "SpawnTime": 56,
+    "Monster_List": "Monster_03,Monster_01",
+    "Count_List": "4,8",
+    "SpawnInterval": 0.5
+  },
+  {
+    "Id": "Wave_04_04",
+    "SpawnTime": 82,
+    "Monster_List": "Monster_01,Monster_02,Monster_03",
+    "Count_List": "8,5,5",
+    "SpawnInterval": 0.45
+  },
+  {
+    "Id": "Wave_04_05",
+    "SpawnTime": 110,
+    "Monster_List": "Monster_04,Monster_01",
+    "Count_List": "1,8",
+    "SpawnInterval": 0.5
   }
 ]

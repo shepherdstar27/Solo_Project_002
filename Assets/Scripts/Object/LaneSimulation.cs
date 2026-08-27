@@ -18,14 +18,18 @@ public class LaneSimulation
     private float _targetingTimer;
     private int _maxAllyCount = 30;
 
+    private bool _isMarchReported;
+
     public event Action<LaneEntity> OnSpawnEntity;
     public event Action<LaneEntity> OnRemoveEntity;
+    public event Action<LaneEntity> OnReachEnemyBase;
 
     public void Setup(DefenseGate gate, int maxAllyCount, float moveScale)
     {
         _gate = gate;
         _maxAllyCount = maxAllyCount;
         _moveScale = moveScale;
+        _isMarchReported = false;
         _allies.Clear();
         _enemies.Clear();
     }
@@ -34,10 +38,14 @@ public class LaneSimulation
     {
         if (entity.Side == EntitySide.Ally)
         {
-            // 최대 소환 수 초과 시 가장 오래된 유닛 제거
+            // 최대 소환 수 초과 시 가장 오래된 유닛 제거. 진격 중인 보스는 밀어내지 않는다
             if (_allies.Count >= _maxAllyCount)
             {
-                RemoveEntity(_allies[0]);
+                LaneEntity removable = FindRemovableAlly();
+                if (removable != null)
+                {
+                    RemoveEntity(removable);
+                }
             }
             _allies.Add(entity);
         }
@@ -119,6 +127,13 @@ public class LaneSimulation
                 continue;
             }
 
+            // 전향한 보스는 전선을 넘어 적 본진까지 밀고 올라간다
+            if (ally.IsMarching)
+            {
+                UpdateMarchingAlly(ally, deltaTime);
+                continue;
+            }
+
             if (ally.UpdateLifeTime(deltaTime))
             {
                 ally.Kill();
@@ -155,6 +170,52 @@ public class LaneSimulation
                 }
             }
         }
+    }
+
+    // 멈추지 않고 계속 전진하면서, 사거리에 들어온 적을 때린다
+    private void UpdateMarchingAlly(LaneEntity ally, float deltaTime)
+    {
+        ally.UpdateCooldown(deltaTime);
+
+        LaneEntity target = FindNearestTarget(ally, _enemies);
+        if (target != null && GetDistance(ally, target) <= ally.Range && ally.IsAttackReady())
+        {
+            target.TakeDamage(ally.Attack);
+            ally.ConsumeAttack();
+        }
+
+        ally.LanePosition += ally.MoveSpeed * _moveScale * deltaTime;
+
+        if (ally.LanePosition < 1f)
+        {
+            return;
+        }
+
+        ally.LanePosition = 1f;
+
+        if (_isMarchReported)
+        {
+            return;
+        }
+        _isMarchReported = true;
+
+        if (OnReachEnemyBase != null)
+        {
+            OnReachEnemyBase.Invoke(ally);
+        }
+    }
+
+    private LaneEntity FindRemovableAlly()
+    {
+        foreach (LaneEntity ally in _allies)
+        {
+            if (ally.IsMarching)
+            {
+                continue;
+            }
+            return ally;
+        }
+        return null;
     }
 
     private LaneEntity FindNearestTarget(LaneEntity self, List<LaneEntity> candidates)

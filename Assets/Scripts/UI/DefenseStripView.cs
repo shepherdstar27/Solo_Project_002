@@ -11,6 +11,7 @@ public class DefenseStripView : MonoBehaviour
 
     [SerializeField] private Color _colorAlly = new Color(0.35f, 0.65f, 1f);
     [SerializeField] private Color _colorEnemy = new Color(1f, 0.45f, 0.45f);
+    [SerializeField] private Color _colorBossAlly = new Color(1f, 0.85f, 0.25f);
 
     private LaneSimulation _simulation;
     private DefenseGate _gate;
@@ -31,7 +32,7 @@ public class DefenseStripView : MonoBehaviour
         GameObject instance = Instantiate(Prefab_LaneEntityView, RectTransform_LaneRoot);
         LaneEntityView view = instance.GetComponent<LaneEntityView>();
 
-        Color color = entity.Side == EntitySide.Ally ? _colorAlly : _colorEnemy;
+        Color color = GetEntityColor(entity);
         view.Bind(entity, RectTransform_LaneRoot.rect.height, RectTransform_LaneRoot.rect.width, color);
 
         _entityViews.Add(view);
@@ -41,6 +42,21 @@ public class DefenseStripView : MonoBehaviour
         {
             SummonEffectView_Gate.PlaySummonEffect(color);
         }
+    }
+
+    private Color GetEntityColor(LaneEntity entity)
+    {
+        if (entity.Side != EntitySide.Ally)
+        {
+            return _colorEnemy;
+        }
+
+        // 전향한 보스는 눈에 띄게 다른 색으로
+        if (entity.IsMarching)
+        {
+            return _colorBossAlly;
+        }
+        return _colorAlly;
     }
 
     private void OnRemoveEntity(LaneEntity entity)

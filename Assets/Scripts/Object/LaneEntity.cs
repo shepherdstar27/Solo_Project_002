@@ -23,6 +23,9 @@ public class LaneEntity
     public float LanePositionX { get; set; }   // -1(좌) ~ 1(우)
     public float LifeTime { get; private set; }  // 0이면 무제한
 
+    // 전향한 보스처럼 전선(0.5)을 넘어 적 본진(1.0)까지 밀고 올라가는 유닛
+    public bool IsMarching { get; private set; }
+
     private float _attackCooldown;
     private float _elapsedLifeTime;
 
@@ -44,6 +47,11 @@ public class LaneEntity
 
         _attackCooldown = 0f;
         _elapsedLifeTime = 0f;
+    }
+
+    public void SetMarching(bool isMarching)
+    {
+        IsMarching = isMarching;
     }
 
     public bool IsAlive()

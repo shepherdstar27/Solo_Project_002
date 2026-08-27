@@ -13,6 +13,10 @@ public class TruckStatus : MonoBehaviour
     public int TruckSize { get; private set; }         // 현재 흡수 가능 sizeValue 상한
     public int CurrentTierNumber { get; private set; } // 표시용 티어 번호 (1부터)
 
+    // 채점용 집계
+    public int CurrentScore { get { return _currentScore; } }
+    public int AbsorbCount { get; private set; }
+
     public event Action<AbsorbableObject> OnAbsorbTarget;
     public event Action<int> OnChangeTier;             // 새 티어 번호 전달
     public event Action<string, string> OnTransfer;   // 대상 이름, 유닛 이름
@@ -48,6 +52,7 @@ public class TruckStatus : MonoBehaviour
 
         _tierIndex = 0;
         _currentScore = 0;
+        AbsorbCount = 0;
         ApplyTier();
     }
     private void Update()
@@ -62,6 +67,7 @@ public class TruckStatus : MonoBehaviour
 
     public void AbsorbTarget(AbsorbableObject target)
     {
+        AbsorbCount++;
         _comboSystem.AddCombo();
 
         float multiplier = _comboSystem.GetScoreMultiplier(_comboBonusPerCombo, _comboMaxMultiplier);

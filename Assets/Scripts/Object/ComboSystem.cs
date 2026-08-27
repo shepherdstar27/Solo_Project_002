@@ -9,6 +9,9 @@ public class ComboSystem
 
     public int ComboCount { get; private set; }
 
+    // 한 판 동안 도달한 최고 콤보. 콤보가 끊겨도 유지되고 Setup에서만 초기화된다
+    public int MaxComboCount { get; private set; }
+
     public event Action<int> OnChangeCombo;
     public event Action<float> OnChangeGauge;   // 0~1
     public event Action OnResetCombo;
@@ -17,12 +20,17 @@ public class ComboSystem
     {
         _fullDuration = fullDuration;
         _decayDuration = decayDuration;
+        MaxComboCount = 0;
         Reset();
     }
 
     public void AddCombo()
     {
         ComboCount++;
+        if (ComboCount > MaxComboCount)
+        {
+            MaxComboCount = ComboCount;
+        }
         _remainTime = _fullDuration + _decayDuration;
 
         if (OnChangeCombo != null)

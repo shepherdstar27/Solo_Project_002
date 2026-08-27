@@ -1,4 +1,4 @@
-﻿using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -15,6 +15,34 @@ public class AbsorbableObject : MonoBehaviour
 
     private bool _isAbsorbed;
 
+    // 자식 모델 프리팹이 콜라이더를 들고 오는 경우가 있어 전부 모아둔다
+    private List<Collider> _colliders = new List<Collider>();
+    private Rigidbody _rigidbody;
+    private bool _isCached;
+
+    private void Awake()
+    {
+        CacheComponents();
+    }
+
+    private void CacheComponents()
+    {
+        if (_isCached)
+        {
+            return;
+        }
+        _isCached = true;
+
+        _colliders.Clear();
+        Collider[] found = GetComponentsInChildren<Collider>(true);
+        foreach (Collider collider in found)
+        {
+            _colliders.Add(collider);
+        }
+
+        _rigidbody = GetComponent<Rigidbody>();
+    }
+
     public void Initialize(int sizeValue, int score, string poolKey)
     {
         _sizeValue = sizeValue;
@@ -22,11 +50,8 @@ public class AbsorbableObject : MonoBehaviour
         _poolKey = poolKey;
         _isAbsorbed = false;
 
-        Collider bodyCollider = GetComponent<Collider>();
-        if (bodyCollider != null)
-        {
-            bodyCollider.enabled = true;
-        }
+        CacheComponents();
+        SetCollisionEnabled(true);
     }
 
     // 에디터 배치용
@@ -50,13 +75,30 @@ public class AbsorbableObject : MonoBehaviour
         }
         _isAbsorbed = true;
 
-        Collider bodyCollider = GetComponent<Collider>();
-        if (bodyCollider != null)
-        {
-            bodyCollider.enabled = false;
-        }
+        CacheComponents();
+
+        // 빨려들어가는 동안 트럭과 부딪혀 감속되지 않도록 물리에서 완전히 빠진다
+        SetCollisionEnabled(false);
 
         PlayAbsorbAsync(absorbPoint).Forget();
+    }
+
+    private void SetCollisionEnabled(bool isEnabled)
+    {
+        foreach (Collider collider in _colliders)
+        {
+            if (collider == null)
+            {
+                continue;
+            }
+            collider.enabled = isEnabled;
+        }
+
+        // 콜라이더를 꺼도 리지드바디가 남아 있으면 접촉 계산이 한 프레임 더 살아있는 경우가 있다
+        if (_rigidbody != null)
+        {
+            _rigidbody.detectCollisions = isEnabled;
+        }
     }
 
     private async UniTask PlayAbsorbAsync(Transform absorbPoint)
@@ -66,12 +108,10 @@ public class AbsorbableObject : MonoBehaviour
         Vector3 startPosition = transform.position;
         Vector3 startScale = transform.localScale;
         float elapsed = 0f;
-        int frameCount = 0;
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            frameCount++;
             float t = Mathf.Clamp01(elapsed / duration);
 
             transform.position = Vector3.Lerp(startPosition, absorbPoint.position, t);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
@@ -14,15 +14,20 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
     private StageData _stage;
     private float _sessionTime;
     private bool _isRunning;
+    private bool _isPaused;
+    private bool _isMarchPhase;
     private int _transferCount;
 
     public LaneSimulation Simulation { get { return _simulation; } }
     public DefenseGate Gate { get { return _gate; } }
     public WaveSpawner Spawner { get { return _waveSpawner; } }
 
-    public event Action<bool, int> OnFinishSession;   // 클리어 여부, 별 개수
+    public float SessionTime { get { return _sessionTime; } }
+    public float TimeLimit { get { return _stage != null ? _stage.TimeLimit : 0f; } }
 
+    public event Action<bool, int> OnFinishSession;          // 클리어 여부, 별 개수
     public event Action<float, float> OnChangeSessionTime;   // 경과, 제한
+    public event Action OnReachEnemyBase;
 
     public void StartSession(string stageId)
     {
@@ -43,20 +48,71 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
 
         _simulation = new LaneSimulation();
         _simulation.Setup(_gate, _maxAllyCount, _laneMoveScale);
+        _simulation.OnReachEnemyBase += OnMarchReachEnemyBase;
 
         _waveSpawner = new WaveSpawner();
         _waveSpawner.Setup(_stage, _simulation, _converter);
 
         _sessionTime = 0f;
         _isRunning = true;
+        _isPaused = false;
+        _isMarchPhase = false;
+
+        if (ClashManager.Instance != null)
+        {
+            ClashManager.Instance.ResetClash();
+        }
 
         GameManager.Instance.StartGame();
         Debug.Log($"[DefenseSessionManager] 세션 시작: {_stage.Id} / 제한 {_stage.TimeLimit}초");
     }
 
+    // 격돌 연출 동안 타이머와 시뮬레이션을 모두 멈춘다
+    public void PauseSession()
+    {
+        _isPaused = true;
+    }
+
+    public void ResumeSession()
+    {
+        _isPaused = false;
+    }
+
+    // 보스를 아군으로 전향시켜 적 본진으로 진격시킨다.
+    // 이 시점부터는 웨이브도 타이머도 돌지 않고 시뮬레이션만 돈다
+    public void BeginMarch(BossTarget boss)
+    {
+        if (_simulation == null || boss == null)
+        {
+            return;
+        }
+
+        LaneEntity entity = new LaneEntity();
+        entity.Setup(
+            boss.AllyDataId,
+            EntitySide.Ally,
+            boss.AllyHp,
+            boss.AllyAttack,
+            boss.AllyAttackInterval,
+            boss.AllyRange,
+            boss.AllyMoveSpeed,
+            0f,
+            0f);
+
+        entity.LanePositionX = 0f;
+        entity.SetMarching(true);
+
+        _simulation.AddEntity(entity);
+
+        _isMarchPhase = true;
+        _isPaused = false;
+
+        Debug.Log($"[DefenseSessionManager] 보스 전향 진격 시작: {boss.BossName}");
+    }
+
     public void SummonUnit(string unitDataId)
     {
-        if (_isRunning == false)
+        if (_isRunning == false || _isPaused || _isMarchPhase)
         {
             return;
         }
@@ -84,15 +140,28 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
         return _transferCount;
     }
 
+    // 전향한 보스가 적 본진에 닿았을 때 클리어 처리
+    public void FinishByBoss()
+    {
+        EndSession(true);
+    }
+
     private void Update()
     {
-        if (_isRunning == false)
+        if (_isRunning == false || _isPaused)
         {
             return;
         }
 
-
         float deltaTime = Time.deltaTime;
+
+        // 진격 연출 중에는 시뮬레이션만 돌린다
+        if (_isMarchPhase)
+        {
+            _simulation.UpdateSimulation(deltaTime);
+            return;
+        }
+
         _sessionTime += deltaTime;
 
         _waveSpawner.UpdateSpawner(_sessionTime);
@@ -103,9 +172,21 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
             OnChangeSessionTime.Invoke(_sessionTime, _stage.TimeLimit);
         }
 
+        // 제한 시간 안에 보스에 닿지 못하면 실패
         if (_sessionTime >= _stage.TimeLimit)
         {
-            EndSession(true);
+            Debug.Log("[DefenseSessionManager] 제한 시간 초과 — 보스에 도달하지 못했습니다");
+            EndSession(false);
+        }
+    }
+
+    private void OnMarchReachEnemyBase(LaneEntity entity)
+    {
+        Debug.Log("[DefenseSessionManager] 적 본진 도달");
+
+        if (OnReachEnemyBase != null)
+        {
+            OnReachEnemyBase.Invoke();
         }
     }
 
@@ -121,6 +202,7 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
             return;
         }
         _isRunning = false;
+        _isMarchPhase = false;
 
         int star = CalculateStar(isClear);
         GameManager.Instance.EndGame(isClear);
@@ -158,10 +240,9 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
         {
             _gate.OnBreakGate -= OnBreakGate;
         }
+        if (_simulation != null)
+        {
+            _simulation.OnReachEnemyBase -= OnMarchReachEnemyBase;
+        }
     }
-
-
-
-
-
 }

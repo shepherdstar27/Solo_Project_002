@@ -1,62 +1,26 @@
 [
   {
     "Id": "Stage_01",
-    "TimeLimit": 120,
+    "TimeLimit": 60,
     "GateHp": 100,
-    "Wave_List": "Wave_01_01,Wave_01_02"
+    "Wave_List": "Wave_01_01,Wave_01_02,Wave_01_03"
   },
   {
     "Id": "Stage_02",
-    "TimeLimit": 120,
-    "GateHp": 100,
-    "Wave_List": "Wave_02_01,Wave_02_02,Wave_02_03"
+    "TimeLimit": 105,
+    "GateHp": 120,
+    "Wave_List": "Wave_02_01,Wave_02_02,Wave_02_03,Wave_02_04"
   },
   {
     "Id": "Stage_03",
     "TimeLimit": 120,
-    "GateHp": 100,
-    "Wave_List": "Wave_03_01,Wave_03_02,Wave_03_03 "
+    "GateHp": 140,
+    "Wave_List": "Wave_03_01,Wave_03_02,Wave_03_03,Wave_03_04,Wave_03_05"
   },
   {
     "Id": "Stage_04",
-    "TimeLimit": 105,
-    "GateHp": 120,
-    "Wave_List": "Wave_04_01,Wave_04_02,Wave_04_03 "
-  },
-  {
-    "Id": "Stage_05",
-    "TimeLimit": 105,
-    "GateHp": 120,
-    "Wave_List": "Wave_05_01,Wave_05_02,Wave_05_03,Wave_05_04 "
-  },
-  {
-    "Id": "Stage_06",
-    "TimeLimit": 105,
-    "GateHp": 120,
-    "Wave_List": "Wave_06_01,Wave_06_02,Wave_06_03,Wave_06_04 "
-  },
-  {
-    "Id": "Stage_07",
-    "TimeLimit": 105,
-    "GateHp": 140,
-    "Wave_List": "Wave_07_01,Wave_07_02,Wave_07_03,Wave_07_04 "
-  },
-  {
-    "Id": "Stage_08",
-    "TimeLimit": 90,
-    "GateHp": 140,
-    "Wave_List": "Wave_08_01,Wave_08_02,Wave_08_03,Wave_08_04 "
-  },
-  {
-    "Id": "Stage_09",
-    "TimeLimit": 90,
-    "GateHp": 140,
-    "Wave_List": "Wave_09_01,Wave_09_02,Wave_09_03,Wave_09_04 "
-  },
-  {
-    "Id": "Stage_10",
-    "TimeLimit": 90,
-    "GateHp": 140,
-    "Wave_List": "Wave_10_01,Wave_10_02,Wave_10_03,Wave_10_04 "
+    "TimeLimit": 140,
+    "GateHp": 180,
+    "Wave_List": "Wave_04_01,Wave_04_02,Wave_04_03,Wave_04_04,Wave_04_05"
   }
 ]

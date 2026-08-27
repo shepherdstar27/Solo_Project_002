@@ -19,9 +19,17 @@ public class TruckInput : MonoBehaviour
         }
     }
 
+    // 격돌 연출처럼 조작을 막아야 할 때 잠근다
+    public bool IsLocked { get; private set; }
+
+    public void SetLocked(bool isLocked)
+    {
+        IsLocked = isLocked;
+    }
+
     private void Update()
     {
-        if (PauseManager.Instance != null && PauseManager.Instance.IsPaused)
+        if (IsLocked || (PauseManager.Instance != null && PauseManager.Instance.IsPaused))
         {
             MoveInput = Vector2.zero;
             MouseDeltaX = 0f;
