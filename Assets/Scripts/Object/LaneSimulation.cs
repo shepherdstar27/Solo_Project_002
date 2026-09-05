@@ -93,7 +93,7 @@ public class LaneSimulation
 
             enemy.UpdateCooldown(deltaTime);
 
-             LaneEntity target = FindNearestTarget(enemy, _allies);
+            LaneEntity target = GetTarget(enemy, _allies, isTargetingFrame);
 
             // 사거리 내 아군이 있으면 정지 후 공격.
             // 단 전선보다 한참 위에서는 멈추지 않는다. 사거리가 긴 원거리 적이 저 위에 눌러앉으면
@@ -141,7 +141,7 @@ public class LaneSimulation
             // 전향한 보스는 전선을 넘어 적 본진까지 밀고 올라간다
             if (ally.IsMarching)
             {
-                UpdateMarchingAlly(ally, deltaTime);
+                UpdateMarchingAlly(ally, deltaTime, isTargetingFrame);
                 continue;
             }
 
@@ -153,7 +153,7 @@ public class LaneSimulation
 
             ally.UpdateCooldown(deltaTime);
 
-            LaneEntity target = FindNearestTarget(ally, _enemies);
+            LaneEntity target = GetTarget(ally, _enemies, isTargetingFrame);
             if (target == null)
             {
                 continue;
@@ -184,11 +184,11 @@ public class LaneSimulation
     }
 
     // 멈추지 않고 계속 전진하면서, 사거리에 들어온 적을 때린다
-    private void UpdateMarchingAlly(LaneEntity ally, float deltaTime)
+    private void UpdateMarchingAlly(LaneEntity ally, float deltaTime, bool isTargetingFrame)
     {
         ally.UpdateCooldown(deltaTime);
 
-        LaneEntity target = FindNearestTarget(ally, _enemies);
+        LaneEntity target = GetTarget(ally, _enemies, isTargetingFrame);
         if (target != null && GetDistance(ally, target) <= ally.Range && ally.IsAttackReady())
         {
             target.TakeDamage(ally.Attack);
@@ -227,6 +227,26 @@ public class LaneSimulation
             return ally;
         }
         return null;
+    }
+
+    // 타겟은 TargetingInterval 간격으로만 다시 찾는다.
+    // 매 프레임 전수 탐색하면 개체 수가 늘어날수록 비교 횟수가 제곱으로 커진다.
+    // 다만 지금 타겟이 죽었거나 목록에서 빠졌다면 간격과 무관하게 즉시 다시 찾는다
+    private LaneEntity GetTarget(LaneEntity self, List<LaneEntity> candidates, bool isTargetingFrame)
+    {
+        if (self.IsTargetValid() == false)
+        {
+            self.SetTarget(FindNearestTarget(self, candidates));
+            return self.Target;
+        }
+
+        if (isTargetingFrame == false)
+        {
+            return self.Target;
+        }
+
+        self.SetTarget(FindNearestTarget(self, candidates));
+        return self.Target;
     }
 
     private LaneEntity FindNearestTarget(LaneEntity self, List<LaneEntity> candidates)
@@ -286,6 +306,9 @@ public class LaneSimulation
 
     private void RemoveEntity(LaneEntity entity)
     {
+        // 다른 개체가 이 개체를 계속 노리지 않도록 표시해 둔다
+        entity.SetRemoved();
+
         if (entity.Side == EntitySide.Ally)
         {
             _allies.Remove(entity);

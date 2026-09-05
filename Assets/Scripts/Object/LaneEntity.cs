@@ -26,6 +26,12 @@ public class LaneEntity
     // 전향한 보스처럼 전선(0.5)을 넘어 적 본진(1.0)까지 밀고 올라가는 유닛
     public bool IsMarching { get; private set; }
 
+    // 매 프레임 전수 탐색하지 않도록 현재 노리는 상대를 들고 있는다
+    public LaneEntity Target { get; private set; }
+
+    // 시뮬레이션 목록에서 빠진 개체. 살아 있어도 더 이상 타겟이 될 수 없다
+    public bool IsRemoved { get; private set; }
+
     private float _attackCooldown;
     private float _elapsedLifeTime;
 
@@ -47,11 +53,38 @@ public class LaneEntity
 
         _attackCooldown = 0f;
         _elapsedLifeTime = 0f;
+        Target = null;
+        IsRemoved = false;
     }
 
     public void SetMarching(bool isMarching)
     {
         IsMarching = isMarching;
+    }
+
+    public void SetTarget(LaneEntity target)
+    {
+        Target = target;
+    }
+
+    public void SetRemoved()
+    {
+        IsRemoved = true;
+        Target = null;
+    }
+
+    // 타겟이 죽었거나 목록에서 빠졌으면 다시 찾아야 한다
+    public bool IsTargetValid()
+    {
+        if (Target == null)
+        {
+            return false;
+        }
+        if (Target.IsRemoved)
+        {
+            return false;
+        }
+        return Target.IsAlive();
     }
 
     public bool IsAlive()

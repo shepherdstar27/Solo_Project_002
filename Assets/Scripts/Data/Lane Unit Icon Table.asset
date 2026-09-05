@@ -28,26 +28,58 @@ MonoBehaviour:
     Color_Tint: {r: 0, g: 0, b: 0, a: 0}
     Scale: 1
   - DataId: Unit_02
-    Sprite_Icon: {fileID: 0}
-    Sprite_Frames: []
+    Sprite_Icon: {fileID: -1758817691, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    Sprite_Frames:
+    - {fileID: -1758817691, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1807443393, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -1849611487, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -580524519, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1493817615, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1712409935, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -1003043087, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 355451245, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
     FramePerSecond: 8
     Color_Tint: {r: 0, g: 0, b: 0, a: 0}
     Scale: 1
   - DataId: Unit_03
-    Sprite_Icon: {fileID: 0}
-    Sprite_Frames: []
+    Sprite_Icon: {fileID: -1758817691, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    Sprite_Frames:
+    - {fileID: -1758817691, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1807443393, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -1849611487, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -580524519, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1493817615, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1712409935, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -1003043087, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 355451245, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
     FramePerSecond: 8
     Color_Tint: {r: 0, g: 0, b: 0, a: 0}
     Scale: 1
   - DataId: Unit_04
-    Sprite_Icon: {fileID: 0}
-    Sprite_Frames: []
+    Sprite_Icon: {fileID: -1758817691, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    Sprite_Frames:
+    - {fileID: -1758817691, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1807443393, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -1849611487, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -580524519, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1493817615, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1712409935, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -1003043087, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 355451245, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
     FramePerSecond: 8
     Color_Tint: {r: 0, g: 0, b: 0, a: 0}
     Scale: 1
   - DataId: Unit_05
-    Sprite_Icon: {fileID: 0}
-    Sprite_Frames: []
+    Sprite_Icon: {fileID: -1758817691, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    Sprite_Frames:
+    - {fileID: -1758817691, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1807443393, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -1849611487, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -580524519, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1493817615, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1712409935, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -1003043087, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 355451245, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
     FramePerSecond: 8
     Color_Tint: {r: 0, g: 0, b: 0, a: 0}
     Scale: 1
