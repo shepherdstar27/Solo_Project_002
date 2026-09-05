@@ -18,17 +18,24 @@ public class LaneSimulation
     private float _targetingTimer;
     private int _maxAllyCount = 30;
 
+    // 아군은 이 선을 넘지 않고, 적은 사거리 안이라도 이 선까지는 내려온다.
+    // 두 값이 벌어져 있으면 사거리가 긴 원거리 적이 아군이 닿지 않는 위치에서 멈춰 교착이 생긴다
+    private float _allyFrontLine = 0.5f;
+    private float _enemyHoldLine = 0.56f;
+
     private bool _isMarchReported;
 
     public event Action<LaneEntity> OnSpawnEntity;
     public event Action<LaneEntity> OnRemoveEntity;
     public event Action<LaneEntity> OnReachEnemyBase;
 
-    public void Setup(DefenseGate gate, int maxAllyCount, float moveScale)
+    public void Setup(DefenseGate gate, int maxAllyCount, float moveScale, float allyFrontLine, float enemyHoldLine)
     {
         _gate = gate;
         _maxAllyCount = maxAllyCount;
         _moveScale = moveScale;
+        _allyFrontLine = allyFrontLine;
+        _enemyHoldLine = enemyHoldLine;
         _isMarchReported = false;
         _allies.Clear();
         _enemies.Clear();
@@ -38,8 +45,9 @@ public class LaneSimulation
     {
         if (entity.Side == EntitySide.Ally)
         {
-            // 최대 소환 수 초과 시 가장 오래된 유닛 제거. 진격 중인 보스는 밀어내지 않는다
-            if (_allies.Count >= _maxAllyCount)
+            // 최대 소환 수 초과 시 가장 오래된 유닛 제거. 진격 중인 보스는 밀어내지 않는다.
+            // _maxAllyCount가 0 이하면 상한 없이 계속 쌓는다
+            if (_maxAllyCount > 0 && _allies.Count >= _maxAllyCount)
             {
                 LaneEntity removable = FindRemovableAlly();
                 if (removable != null)
@@ -87,8 +95,11 @@ public class LaneSimulation
 
              LaneEntity target = FindNearestTarget(enemy, _allies);
 
-            // 사거리 내 아군이 있으면 정지 후 공격
-            if (target != null && GetDistance(enemy, target) <= enemy.Range)
+            // 사거리 내 아군이 있으면 정지 후 공격.
+            // 단 전선보다 한참 위에서는 멈추지 않는다. 사거리가 긴 원거리 적이 저 위에 눌러앉으면
+            // 전선(0.5)에 묶인 근접 아군이 영영 닿지 못해 일방적으로 얻어맞기만 한다
+            if (target != null && GetDistance(enemy, target) <= enemy.Range
+                && enemy.LanePosition <= _enemyHoldLine)
             {
                 if (enemy.IsAttackReady())
                 {
@@ -160,13 +171,13 @@ public class LaneSimulation
                 continue;
             }
 
-            // 근접 유닛만 짧은 전진 허용 (전선 0.5를 넘지 않음)
+            // 근접 유닛만 짧은 전진 허용 (전선을 넘지 않음)
             if (ally.MoveSpeed > 0f)
             {
                 MoveToward(ally, target, 1f, deltaTime);
-                if (ally.LanePosition > 0.5f)
+                if (ally.LanePosition > _allyFrontLine)
                 {
-                    ally.LanePosition = 0.5f;
+                    ally.LanePosition = _allyFrontLine;
                 }
             }
         }

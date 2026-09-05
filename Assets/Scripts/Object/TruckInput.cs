@@ -14,8 +14,7 @@ public class TruckInput : MonoBehaviour
     {
         if (_isCursorLocked)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            CursorController.Lock();
         }
     }
 

@@ -9,6 +9,9 @@ public class DefenseStripView : MonoBehaviour
     [SerializeField] private Image Image_GateHpFill;
     [SerializeField] private SummonEffectView SummonEffectView_Gate;
 
+    // 아군·적·전향한 보스의 이미지를 모아 둔 테이블. 비워 두면 아래 색으로만 표시된다
+    [SerializeField] private LaneUnitIconTable LaneUnitIconTable_Icons;
+
     [SerializeField] private Color _colorAlly = new Color(0.35f, 0.65f, 1f);
     [SerializeField] private Color _colorEnemy = new Color(1f, 0.45f, 0.45f);
     [SerializeField] private Color _colorBossAlly = new Color(1f, 0.85f, 0.25f);
@@ -22,6 +25,11 @@ public class DefenseStripView : MonoBehaviour
         _simulation = simulation;
         _gate = gate;
 
+        if (LaneUnitIconTable_Icons == null)
+        {
+            Debug.LogWarning("[DefenseStripView] LaneUnitIconTable이 연결되지 않아 유닛이 색 박스로 표시됩니다");
+        }
+
         _simulation.OnSpawnEntity += OnSpawnEntity;
         _simulation.OnRemoveEntity += OnRemoveEntity;
         _gate.OnChangeHp += OnChangeGateHp;
@@ -33,15 +41,28 @@ public class DefenseStripView : MonoBehaviour
         LaneEntityView view = instance.GetComponent<LaneEntityView>();
 
         Color color = GetEntityColor(entity);
-        view.Bind(entity, RectTransform_LaneRoot.rect.height, RectTransform_LaneRoot.rect.width, color);
+
+        // 이미지 조회는 여기서 한 번만 하고, 아이콘과 소환 연출이 같은 결과를 쓴다
+        LaneUnitIconEntry icon = FindIcon(entity.DataId);
+
+        view.Bind(entity, RectTransform_LaneRoot.rect.height, RectTransform_LaneRoot.rect.width, color, icon);
 
         _entityViews.Add(view);
 
         // 아군 소환 시 게이트에서 "뿅" 연출
         if (entity.Side == EntitySide.Ally && SummonEffectView_Gate != null)
         {
-            SummonEffectView_Gate.PlaySummonEffect(color);
+            SummonEffectView_Gate.PlaySummonEffect(icon, color);
         }
+    }
+
+    private LaneUnitIconEntry FindIcon(string dataId)
+    {
+        if (LaneUnitIconTable_Icons == null)
+        {
+            return null;
+        }
+        return LaneUnitIconTable_Icons.FindEntry(dataId);
     }
 
     private Color GetEntityColor(LaneEntity entity)

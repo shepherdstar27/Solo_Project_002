@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8043204892596298732}
+  - component: {fileID: 5764636397179152759}
+  - component: {fileID: 236628163806091974}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -40,8 +42,91 @@ Transform:
   - {fileID: 141169787057440600}
   - {fileID: 1295380855471088399}
   - {fileID: 3574493415219320439}
+  - {fileID: 8849725064092500480}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5764636397179152759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412300151389439866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac825e7dacf14541a99c8bcb20d4b5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClashOverlayView
+  _isEnabled: 1
+  Texture_Background: {fileID: 2800000, guid: 1ac961211163c1341bfdfaddb7b365b0, type: 3}
+  Texture_Truck: {fileID: 2800000, guid: 8b0c37d03f2b9a04aae42bad6d2d71cd, type: 3}
+  Texture_Boss: {fileID: 2800000, guid: 9b52eaaef935b094796fc9f2ceabc2d7, type: 3}
+  Texture_SparkFrames:
+  - {fileID: 2800000, guid: 18bb3661d3ee30d4fab97155742d2524, type: 3}
+  - {fileID: 2800000, guid: 44047f5e400e48a4ab59befbdbec7a71, type: 3}
+  - {fileID: 2800000, guid: 57bfdd8edd9d00c4a921c0420f8476c6, type: 3}
+  Texture_GaugeBack: {fileID: 2800000, guid: 334b0c6924e175249a31b1775c87ece2, type: 3}
+  Texture_GaugeFill: {fileID: 2800000, guid: 20b7527911f8a5b4b902c7ea54f8c708, type: 3}
+  _cutTopRatio: 0.1
+  _cutHeightRatio: 0.6
+  _cutWidthRatio: 0.4
+  _truckLeftRatio: 0.08
+  _bossLeftRatio: 0.6
+  _pushDistanceRatio: 0.45
+  _sparkFramePerSecond: 14
+  _sparkWidthRatio: 2
+  _sparkHeightRatio: 2
+  _sparkScaleMin: 1
+  _sparkScaleMax: 2
+  _sparkPulseAmount: 0.15
+  _colorPanel: {r: 0.05, g: 0.05, b: 0.08, a: 0.88}
+  _colorGaugeBack: {r: 0.2, g: 0.2, b: 0.25, a: 1}
+  _colorGaugeFill: {r: 1, g: 0.72, b: 0.2, a: 1}
+  _colorSpark: {r: 1, g: 0.5, b: 0.1, a: 1}
+  _colorTruckBox: {r: 0.3, g: 0.55, b: 0.9, a: 0.9}
+  _colorBossBox: {r: 0.8, g: 0.25, b: 0.3, a: 0.9}
+--- !u!114 &236628163806091974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412300151389439866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f03159f1bb905c4481c71ace8b8bc63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EndingCutView
+  _pages:
+  - Name: 1
+    Texture_Panels:
+    - {fileID: 2800000, guid: 70db477f064d3804d8b5e0550ef86719, type: 3}
+    FadeTime: 0.4
+    PanelInterval: 1
+    HoldTime: 1.2
+  - Name: 2
+    Texture_Panels:
+    - {fileID: 2800000, guid: ae88359f61898e64b90a3755edf7eb2f, type: 3}
+    FadeTime: 0.4
+    PanelInterval: 1
+    HoldTime: 1.2
+  - Name: 3
+    Texture_Panels:
+    - {fileID: 2800000, guid: 9bee2ffd79636a14598921f8e6f6f730, type: 3}
+    FadeTime: 0.4
+    PanelInterval: 1
+    HoldTime: 1.2
+  - Name: 4
+    Texture_Panels:
+    - {fileID: 2800000, guid: 1489a44649f41c54091d7f1e929a76bb, type: 3}
+    FadeTime: 0.4
+    PanelInterval: 1
+    HoldTime: 1.2
+  _pageFadeOutTime: 0.5
+  _panelGap: 12
+  _screenMarginRatio: 0.08
+  _colorBackground: {r: 0.02, g: 0.02, b: 0.04, a: 1}
+  _isSkipEnabled: 1
 --- !u!1 &1067130100900399809
 GameObject:
   m_ObjectHideFlags: 0
@@ -516,7 +601,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefenseSessionManager
   _laneMoveScale: 0.15
-  _maxAllyCount: 30
+  _maxAllyCount: 0
 --- !u!1 &6892909111203258372
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,6 +734,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f56c44a2cf6557a45a16499ac5592c0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+--- !u!1 &8900835750161862915
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8849725064092500480}
+  - component: {fileID: 2691432651417327721}
+  m_Layer: 0
+  m_Name: ClashManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8849725064092500480
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8900835750161862915}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8043204892596298732}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2691432651417327721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8900835750161862915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dae3c420ce867e4580eea23bc634fc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClashManager
+  _basePressCount: 30
+  _minPressCount: 10
+  _impactReduceRatio: 0.6
+  _gaugeDecayPerSecond: 0.12
+  _pushDuration: 1.2
+  EndingCutView_Ending: {fileID: 0}
 --- !u!1001 &6156804585584498104
 PrefabInstance:
   m_ObjectHideFlags: 0

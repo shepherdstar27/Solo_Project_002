@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5d8313f0bef6b14d895359639b59cb2, type: 3}
+  m_Name: Lane Unit Icon Table
+  m_EditorClassIdentifier: Assembly-CSharp::LaneUnitIconTable
+  Entries:
+  - DataId: Unit_01
+    Sprite_Icon: {fileID: -1758817691, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    Sprite_Frames:
+    - {fileID: -1758817691, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1807443393, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -1849611487, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -580524519, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1493817615, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 1712409935, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: -1003043087, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    - {fileID: 355451245, guid: b03207b9d81733b43a5dbbbc724391a4, type: 3}
+    FramePerSecond: 7
+    Color_Tint: {r: 0, g: 0, b: 0, a: 0}
+    Scale: 1
+  - DataId: Unit_02
+    Sprite_Icon: {fileID: 0}
+    Sprite_Frames: []
+    FramePerSecond: 8
+    Color_Tint: {r: 0, g: 0, b: 0, a: 0}
+    Scale: 1
+  - DataId: Unit_03
+    Sprite_Icon: {fileID: 0}
+    Sprite_Frames: []
+    FramePerSecond: 8
+    Color_Tint: {r: 0, g: 0, b: 0, a: 0}
+    Scale: 1
+  - DataId: Unit_04
+    Sprite_Icon: {fileID: 0}
+    Sprite_Frames: []
+    FramePerSecond: 8
+    Color_Tint: {r: 0, g: 0, b: 0, a: 0}
+    Scale: 1
+  - DataId: Unit_05
+    Sprite_Icon: {fileID: 0}
+    Sprite_Frames: []
+    FramePerSecond: 8
+    Color_Tint: {r: 0, g: 0, b: 0, a: 0}
+    Scale: 1
+  - DataId: Monster_01
+    Sprite_Icon: {fileID: 458404097, guid: d4b222847e2c0864484d129d62fa458f, type: 3}
+    Sprite_Frames:
+    - {fileID: 458404097, guid: d4b222847e2c0864484d129d62fa458f, type: 3}
+    - {fileID: 1996875079, guid: d4b222847e2c0864484d129d62fa458f, type: 3}
+    - {fileID: 1026958683, guid: d4b222847e2c0864484d129d62fa458f, type: 3}
+    - {fileID: -1960693528, guid: d4b222847e2c0864484d129d62fa458f, type: 3}
+    - {fileID: 949662288, guid: d4b222847e2c0864484d129d62fa458f, type: 3}
+    - {fileID: -283214327, guid: d4b222847e2c0864484d129d62fa458f, type: 3}
+    - {fileID: -63489213, guid: d4b222847e2c0864484d129d62fa458f, type: 3}
+    - {fileID: -1170438673, guid: d4b222847e2c0864484d129d62fa458f, type: 3}
+    FramePerSecond: 8
+    Color_Tint: {r: 0, g: 0, b: 0, a: 0}
+    Scale: 1
+  - DataId: Monster_02
+    Sprite_Icon: {fileID: 21300000, guid: 19f4488039f6d2940b54bac628aee53d, type: 3}
+    Sprite_Frames:
+    - {fileID: 544423799, guid: 93a79c01725188f419b4685c0bc3517e, type: 3}
+    - {fileID: -1144239171, guid: c853ff2dea4a2bf4fb8c9fb77331f4ec, type: 3}
+    - {fileID: -56561596, guid: 158223dcc4ab53b4ba80a6cdf28e344c, type: 3}
+    - {fileID: -1047185813, guid: 2f4d650982aacc04a8b72de71be9f88e, type: 3}
+    - {fileID: -1773256651, guid: 48027e6fb687e0a49aa74ba6b60b45b8, type: 3}
+    - {fileID: -1083825284, guid: 1a92c045682f88346ae5c055ce81b649, type: 3}
+    - {fileID: -1630751569, guid: 5c227b4a2a6b5f34baa4ffdae034e6cd, type: 3}
+    - {fileID: -1690537879, guid: 49c27b3e780512a449c9ca3aab1cc764, type: 3}
+    - {fileID: -559415369, guid: ee7fc0828fff8de49944bde86702a327, type: 3}
+    FramePerSecond: 11
+    Color_Tint: {r: 0, g: 0, b: 0, a: 0}
+    Scale: 2
+  - DataId: Monster_03
+    Sprite_Icon: {fileID: 0}
+    Sprite_Frames: []
+    FramePerSecond: 8
+    Color_Tint: {r: 0, g: 0, b: 0, a: 0}
+    Scale: 1
+  - DataId: Monster_04
+    Sprite_Icon: {fileID: 0}
+    Sprite_Frames: []
+    FramePerSecond: 8
+    Color_Tint: {r: 0, g: 0, b: 0, a: 0}
+    Scale: 1
+  - DataId: Boss_Ally
+    Sprite_Icon: {fileID: 0}
+    Sprite_Frames: []
+    FramePerSecond: 8
+    Color_Tint: {r: 0, g: 0, b: 0, a: 0}
+    Scale: 3

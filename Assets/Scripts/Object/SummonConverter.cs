@@ -46,7 +46,9 @@ public class SummonConverter
             data.Range,
             data.MoveSpeed,
             0f,
-            0.95f);   // 최상단 스폰
+            // 최상단 스폰. 한 웨이브가 한꺼번에 쏟아지므로 세로로도 조금 흩어 놓는다.
+            // 같은 높이에 겹쳐 놓으면 한 줄로 딱 붙어 보인다
+            Random.Range(0.86f, 0.99f));
 
         entity.LanePositionX = Random.Range(-0.85f, 0.85f);
         return entity;

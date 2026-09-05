@@ -40,8 +40,7 @@ public class PauseManager : SingletonBase<PauseManager>
         _isPaused = true;
         Time.timeScale = 0f;
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        CursorController.Unlock();
 
         PauseUI ui = await UIManager.Instance.OpenUIAsync<PauseUI>(UIAddress.Pause);
         if (ui == null)
@@ -59,8 +58,7 @@ public class PauseManager : SingletonBase<PauseManager>
         _isPaused = false;
         Time.timeScale = 1f;
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        CursorController.Lock();
 
         UIManager.Instance.CloseUI(UIAddress.Option);
         UIManager.Instance.CloseUI(UIAddress.Pause);

@@ -11,18 +11,63 @@ public class LaneEntityView : MonoBehaviour
     private LaneEntity _entity;
     private float _laneHeight;
     private float _laneHalfWidth;
+    private UISpriteAnimator _animator;
 
     public LaneEntity Entity { get; private set; }
 
-    public void Bind(LaneEntity entity, float laneHeight, float laneWidth, Color bodyColor)
+    // icon이 없거나 이미지가 비어 있으면 예전처럼 bodyColor로 칠한다
+    public void Bind(LaneEntity entity, float laneHeight, float laneWidth, Color bodyColor, LaneUnitIconEntry icon)
     {
         _entity = entity;
         Entity = entity;
         _laneHeight = laneHeight;
         _laneHalfWidth = laneWidth * 0.5f - 20f;
 
-        Image_Body.color = bodyColor;
+        ApplyIcon(bodyColor, icon);
         UpdateView();
+    }
+
+    private void ApplyIcon(Color bodyColor, LaneUnitIconEntry icon)
+    {
+        if (Image_Body == null)
+        {
+            return;
+        }
+
+        if (icon == null || icon.GetStaticSprite() == null)
+        {
+            Image_Body.color = bodyColor;
+            return;
+        }
+
+        Image_Body.sprite = icon.GetStaticSprite();
+
+        // 이미지를 쓸 때는 진영 색으로 덮지 않고 지정한 틴트를 그대로 쓴다
+        Image_Body.color = icon.GetTint();
+
+        if (RectTransform_Root != null)
+        {
+            RectTransform_Root.localScale = Vector3.one * icon.Scale;
+        }
+
+        if (icon.IsAnimated())
+        {
+            GetAnimator().Play(Image_Body, icon.Sprite_Frames, icon.FramePerSecond);
+        }
+    }
+
+    // 프리팹에 미리 붙여 두지 않아도 되도록 필요할 때 만든다
+    private UISpriteAnimator GetAnimator()
+    {
+        if (_animator == null)
+        {
+            _animator = GetComponent<UISpriteAnimator>();
+        }
+        if (_animator == null)
+        {
+            _animator = gameObject.AddComponent<UISpriteAnimator>();
+        }
+        return _animator;
     }
 
     public void UpdateView()

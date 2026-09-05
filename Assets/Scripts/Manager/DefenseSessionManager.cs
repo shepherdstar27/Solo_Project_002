@@ -4,7 +4,11 @@ using UnityEngine;
 public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
 {
     [SerializeField] private float _laneMoveScale = 0.15f;
-    [SerializeField] private int _maxAllyCount = 30;
+    [SerializeField] private int _maxAllyCount = 0;   // 0 이하면 소환 수 제한 없음
+
+    [Header("전선")]
+    [SerializeField] private float _allyFrontLine = 0.5f;   // 아군이 넘지 않는 위치
+    [SerializeField] private float _enemyHoldLine = 0.56f;  // 적이 사거리 안이라도 이 위에서는 멈추지 않음
 
     private LaneSimulation _simulation;
     private DefenseGate _gate;
@@ -47,7 +51,7 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
         _gate.OnBreakGate += OnBreakGate;
 
         _simulation = new LaneSimulation();
-        _simulation.Setup(_gate, _maxAllyCount, _laneMoveScale);
+        _simulation.Setup(_gate, _maxAllyCount, _laneMoveScale, _allyFrontLine, _enemyHoldLine);
         _simulation.OnReachEnemyBase += OnMarchReachEnemyBase;
 
         _waveSpawner = new WaveSpawner();
@@ -107,6 +111,11 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
         _isMarchPhase = true;
         _isPaused = false;
 
+        // 제한 시간이 먼저 끝나 EndSession(false)가 이미 돌았을 수 있다.
+        // 그 상태에서는 Update()가 첫 줄에서 빠져나가 진격이 한 프레임도 돌지 않으므로
+        // 진격 연출을 위해 세션을 다시 열어 준다
+        _isRunning = true;
+
         Debug.Log($"[DefenseSessionManager] 보스 전향 진격 시작: {boss.BossName}");
     }
 
@@ -143,6 +152,7 @@ public class DefenseSessionManager : SingletonBase<DefenseSessionManager>
     // 전향한 보스가 적 본진에 닿았을 때 클리어 처리
     public void FinishByBoss()
     {
+        _isMarchPhase = false;
         EndSession(true);
     }
 

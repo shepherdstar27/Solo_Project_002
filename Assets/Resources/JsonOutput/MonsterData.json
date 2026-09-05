@@ -11,13 +11,13 @@
   },
   {
     "Id": "Monster_02",
-    "Name": "원거리몬스터",
+    "Name": "근접몬스터2",
     "Hp": 12,
     "Attack": 6,
     "AttackInterval": 2,
-    "Range": 0.25,
+    "Range": 0.06,
     "MoveSpeed": 0.8,
-    "Type": "Ranged"
+    "Type": "Melee"
   },
   {
     "Id": "Monster_03",

@@ -4,8 +4,28 @@ using UnityEngine.AddressableAssets;
 
 public class StageLoader : SingletonBase<StageLoader>
 {
+    // StageLoader는 DontDestroyOnLoad라 씬을 다시 로드해도 살아남는다.
+    // 시작 버튼이 두 번 전달되면 트럭이 두 대 겹쳐 생성되어 서로를 밀어내며 튕겨 나가므로
+    // 중복 로드를 여기서 한 번 더 막는다
+    private bool _isLoading;
+    private bool _isLoaded;
+
+    // 다시하기로 씬을 리로드하기 직전에 호출한다
+    public void ResetLoader()
+    {
+        _isLoading = false;
+        _isLoaded = false;
+    }
+
     public async UniTask LoadStageAsync()
     {
+        if (_isLoading || _isLoaded)
+        {
+            Debug.LogWarning("[StageLoader] 이미 스테이지를 불러왔습니다. 중복 호출을 무시합니다");
+            return;
+        }
+        _isLoading = true;
+
         // 1. 인게임 캔버스 (조이스틱)
         GameObject canvas = await Addressables.InstantiateAsync("Canvas_InGame").ToUniTask();
         FloatingJoystick joystick = canvas.GetComponentInChildren<FloatingJoystick>();
@@ -17,6 +37,7 @@ public class StageLoader : SingletonBase<StageLoader>
         if (truckReference == null)
         {
             Debug.LogError("[StageLoader] Truck 프리팹에 TruckReference가 없습니다");
+            _isLoading = false;
             return;
         }
 
@@ -76,6 +97,9 @@ public class StageLoader : SingletonBase<StageLoader>
 
         DefenseStripView stripView = canvasStrip.GetComponent<DefenseStripView>();
         stripView.Bind(DefenseSessionManager.Instance.Simulation, DefenseSessionManager.Instance.Gate);
+
+        _isLoading = false;
+        _isLoaded = true;
 
         Debug.Log("[StageLoader] 스테이지 로드 완료");
 

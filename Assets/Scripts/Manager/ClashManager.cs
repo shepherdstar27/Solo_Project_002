@@ -8,6 +8,7 @@ public enum ClashState
     Clash,     // 스페이스 연타 중
     Push,      // 보스를 밀어내는 연출 중
     March,     // 전향한 보스가 적 본진으로 진격 중
+    Cut,       // 엔딩 컷을 보여주는 중
     Ending,
 }
 
@@ -18,9 +19,20 @@ public class ClashManager : SingletonBase<ClashManager>
     [SerializeField] private int _minPressCount = 10;           // 위력이 최대여도 이만큼은 눌러야 한다
     [SerializeField] private float _impactReduceRatio = 0.6f;   // 위력이 연타 수를 깎는 비율
     [SerializeField] private float _gaugeDecayPerSecond = 0.12f;
+    [SerializeField] private float _pushDuration = 1.2f;         // 보스를 밀어내는 연출 길이
+
+    // 정산창 직전에 재생할 엔딩 컷. 비워 두면 자동으로 씬에서 찾는다
+    [SerializeField] private EndingCutView EndingCutView_Ending;
 
     public ClashState State { get; private set; }
     public ClashScore Score { get; private set; }
+
+    // 프리팹 UI가 없을 때 오버레이가 읽어 가는 값
+    public float GaugeRatio { get { return Mathf.Clamp01(_gauge); } }
+    public int PressCount { get { return _pressCount; } }
+    public int RequiredPressCount { get { return _requiredPressCount; } }
+    public string BossName { get { return _boss != null ? _boss.BossName : string.Empty; } }
+    public float PushRatio { get { return _pushDuration <= 0f ? 1f : Mathf.Clamp01(_pushElapsed / _pushDuration); } }
 
     public event Action OnBeginClash;
     public event Action OnFinishClash;
@@ -33,6 +45,7 @@ public class ClashManager : SingletonBase<ClashManager>
     private int _pressCount;
     private int _requiredPressCount = 30;
     private float _clashElapsed;
+    private float _pushElapsed;
     private bool _isSubscribed;
 
     public void ResetClash()
@@ -44,6 +57,7 @@ public class ClashManager : SingletonBase<ClashManager>
         _gauge = 0f;
         _pressCount = 0;
         _clashElapsed = 0f;
+        _pushElapsed = 0f;
     }
 
     public void BeginClash(BossTarget boss, TruckStatus status, TruckController controller)
@@ -69,6 +83,10 @@ public class ClashManager : SingletonBase<ClashManager>
         SubscribeSession(session);
         session.PauseSession();
 
+        // 충돌 속도는 반드시 트럭을 세우기 전에 읽는다.
+        // StopForClash()가 속도를 0으로 만들기 때문에 순서가 바뀌면 항상 0km/h로 기록된다
+        float impactSpeedKph = controller != null ? controller.CurrentSpeedKph : 0f;
+
         // 트럭을 그 자리에 세운다
         if (controller != null)
         {
@@ -83,7 +101,7 @@ public class ClashManager : SingletonBase<ClashManager>
 
         Score = new ClashScore();
         Score.SetImpact(
-            controller != null ? controller.CurrentSpeedKph : 0f,
+            impactSpeedKph,
             status.CurrentTierNumber,
             status.CurrentScore,
             status.AbsorbCount,
@@ -100,6 +118,7 @@ public class ClashManager : SingletonBase<ClashManager>
         _gauge = 0f;
         _pressCount = 0;
         _clashElapsed = 0f;
+        _pushElapsed = 0f;
 
         if (OnBeginClash != null)
         {
@@ -171,6 +190,11 @@ public class ClashManager : SingletonBase<ClashManager>
             await _view.PlayPushAsync();
             UIManager.Instance.CloseUI(_view);
         }
+        else
+        {
+            // 프리팹 UI가 없으면 오버레이가 PushRatio를 읽어 보스를 밀어내는 연출을 그린다
+            await PlayOverlayPushAsync();
+        }
 
         if (_truckInput != null)
         {
@@ -184,6 +208,19 @@ public class ClashManager : SingletonBase<ClashManager>
         {
             OnFinishClash.Invoke();
         }
+    }
+
+    private async UniTask PlayOverlayPushAsync()
+    {
+        _pushElapsed = 0f;
+
+        while (_pushElapsed < _pushDuration)
+        {
+            _pushElapsed += Time.unscaledDeltaTime;
+            await UniTask.Yield();
+        }
+
+        _pushElapsed = _pushDuration;
     }
 
     private void SubscribeSession(DefenseSessionManager session)
@@ -203,14 +240,52 @@ public class ClashManager : SingletonBase<ClashManager>
             return;
         }
 
+        State = ClashState.Cut;
+        PlayCutAsync().Forget();
+    }
+
+    // 승리 처리 → 엔딩 컷 → 정산창 순서로 진행한다
+    private async UniTask PlayCutAsync()
+    {
+        DefenseSessionManager.Instance.FinishByBoss();
+
+        // 결과창은 버튼을 눌러야 하므로 커서를 푼다.
+        // EndingView 프리팹이 없어 ClashOverlayView가 대신 그릴 때도 풀려야 하므로 여기서 처리한다
+        CursorController.Unlock();
+
+        // 컷과 결과창이 뜬 뒤에는 ESC 일시정지가 커서를 다시 잠그지 않도록 막는다
+        if (PauseManager.Instance != null)
+        {
+            PauseManager.Instance.SetEnabled(false);
+        }
+
+        EndingCutView cutView = GetCutView();
+        if (cutView != null)
+        {
+            await cutView.PlayAsync();
+        }
+        else
+        {
+            Debug.LogWarning("[ClashManager] EndingCutView가 없어 컷 없이 정산창으로 넘어갑니다");
+        }
+
         State = ClashState.Ending;
-        OpenEndingAsync().Forget();
+        await OpenEndingAsync();
+    }
+
+    private EndingCutView GetCutView()
+    {
+        if (EndingCutView_Ending != null)
+        {
+            return EndingCutView_Ending;
+        }
+
+        EndingCutView_Ending = FindFirstObjectByType<EndingCutView>();
+        return EndingCutView_Ending;
     }
 
     private async UniTask OpenEndingAsync()
     {
-        DefenseSessionManager.Instance.FinishByBoss();
-
         EndingView view = await UIManager.Instance.OpenUIAsync<EndingView>(UIAddress.Ending);
 
         // 엔딩 화면이 아직 없으면 채점표를 콘솔에 찍어 흐름만 확인할 수 있게 한다

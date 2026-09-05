@@ -22,7 +22,7 @@ MonoBehaviour:
     Prefab_Road: {fileID: 6134741366318156252, guid: 835d09747e55e49458811c8ca40910d2, type: 3}
     StartX: 0
     StartZ: -300
-    TileCount: 35
+    TileCount: 10
     Width: 40
     StartY: 300
     HeightDrop: 6
@@ -48,7 +48,7 @@ MonoBehaviour:
     Prefab_Road: {fileID: 6134741366318156252, guid: 835d09747e55e49458811c8ca40910d2, type: 3}
     StartX: 0
     StartZ: -300
-    TileCount: 35
+    TileCount: 10
     Width: 40
     StartY: 300
     HeightDrop: 6
@@ -100,7 +100,7 @@ MonoBehaviour:
     Prefab_Road: {fileID: 6134741366318156252, guid: 835d09747e55e49458811c8ca40910d2, type: 3}
     StartX: 0
     StartZ: -300
-    TileCount: 9
+    TileCount: 3
     Width: 40
     StartY: 300
     HeightDrop: 6
@@ -129,7 +129,7 @@ MonoBehaviour:
   Zones:
   - ZoneName: 1
     IsUseCourseRange: 1
-    CourseStart: 0
+    CourseStart: 0.05
     CourseEnd: 0.35
     MinZ: -320
     MaxZ: 3000
@@ -139,7 +139,7 @@ MonoBehaviour:
       SizeValue: 1
       Score: 1
       VisualScale: 1
-      Count: 50
+      Count: 100
       IsOnRoad: 1
       RoadSpreadRatio: 0.9
     - Prefab_Target: {fileID: 2738688504400530325, guid: f078a8650a1033f4ab6142a31987a981, type: 3}
@@ -167,7 +167,7 @@ MonoBehaviour:
       RoadSpreadRatio: 0.9
     - Prefab_Target: {fileID: 2738688504400530325, guid: f078a8650a1033f4ab6142a31987a981, type: 3}
       TargetId: Target_02
-      SizeValue: 1
+      SizeValue: 2
       Score: 1
       VisualScale: 1
       Count: 50
@@ -175,7 +175,7 @@ MonoBehaviour:
       RoadSpreadRatio: 0.9
     - Prefab_Target: {fileID: 2738688504400530325, guid: 4a873e60b84e4df4ba1451cea2bddbd3, type: 3}
       TargetId: Target_03
-      SizeValue: 1
+      SizeValue: 4
       Score: 2
       VisualScale: 1
       Count: 30
@@ -183,7 +183,7 @@ MonoBehaviour:
       RoadSpreadRatio: 0.9
     - Prefab_Target: {fileID: 5579085350359998583, guid: ff8e6a01b4362744395cbddb3b124587, type: 3}
       TargetId: Target_04
-      SizeValue: 1
+      SizeValue: 8
       Score: 4
       VisualScale: 1
       Count: 20
@@ -206,7 +206,7 @@ MonoBehaviour:
       RoadSpreadRatio: 0.9
     - Prefab_Target: {fileID: 2738688504400530325, guid: f078a8650a1033f4ab6142a31987a981, type: 3}
       TargetId: Target_02
-      SizeValue: 1
+      SizeValue: 2
       Score: 1
       VisualScale: 1
       Count: 50
@@ -214,7 +214,7 @@ MonoBehaviour:
       RoadSpreadRatio: 0.9
     - Prefab_Target: {fileID: 2738688504400530325, guid: 4a873e60b84e4df4ba1451cea2bddbd3, type: 3}
       TargetId: Target_03
-      SizeValue: 1
+      SizeValue: 4
       Score: 2
       VisualScale: 1
       Count: 30
@@ -222,7 +222,7 @@ MonoBehaviour:
       RoadSpreadRatio: 0.9
     - Prefab_Target: {fileID: 5579085350359998583, guid: ff8e6a01b4362744395cbddb3b124587, type: 3}
       TargetId: Target_04
-      SizeValue: 1
+      SizeValue: 8
       Score: 4
       VisualScale: 1
       Count: 20
@@ -230,7 +230,7 @@ MonoBehaviour:
       RoadSpreadRatio: 0.9
     - Prefab_Target: {fileID: 4832907602962289505, guid: 45861ab70851e6a4193bea36f38bd80e, type: 3}
       TargetId: Target_05
-      SizeValue: 1
+      SizeValue: 16
       Score: 8
       VisualScale: 1
       Count: 10

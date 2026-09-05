@@ -38,8 +38,7 @@ public class EndingView : UIBase
 
     private async UniTask ShowEndingAsync(ClashScore score)
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        CursorController.Unlock();
 
         SetActive(GameObject_ScoreRoot, false);
         SetActive(GameObject_CutRoot, true);

@@ -53,7 +53,20 @@ public class UIManager : SingletonBase<UIManager>
 
         _loadingKeys.Add(addressKey);
 
-        GameObject prefab = await Addressables.LoadAssetAsync<GameObject>(addressKey).ToUniTask();
+        // Addressables는 등록되지 않은 주소를 넘기면 null을 돌려주는 게 아니라 예외를 던진다.
+        // 잡지 않으면 호출한 쪽의 await 뒷부분이 통째로 실행되지 않아 게임이 멈춘 것처럼 보인다.
+        GameObject prefab = null;
+        try
+        {
+            prefab = await Addressables.LoadAssetAsync<GameObject>(addressKey).ToUniTask();
+        }
+        catch (System.Exception exception)
+        {
+            _loadingKeys.Remove(addressKey);
+            Debug.LogError($"[UIManager] UI 주소를 찾을 수 없습니다: {addressKey} ({exception.GetType().Name})");
+            return null;
+        }
+
         if (prefab == null)
         {
             _loadingKeys.Remove(addressKey);

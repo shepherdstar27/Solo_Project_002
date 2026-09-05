@@ -35,7 +35,11 @@ public class GameManager : SingletonBase<GameManager>
 
     public void EndGame(bool isClear)
     {
-        if (State != GameState.Playing)
+        // 제한 시간 초과로 이미 Fail이 된 뒤에 보스 격돌을 성공하면 클리어로 덮어쓴다.
+        // 반대로 Clear를 Fail로 되돌리는 것은 막는다
+        bool isOverwriteFail = isClear && State == GameState.Fail;
+
+        if (State != GameState.Playing && isOverwriteFail == false)
         {
             return;
         }
@@ -83,6 +87,12 @@ public class GameManager : SingletonBase<GameManager>
         if (ClashManager.Instance != null)
         {
             ClashManager.Instance.ResetClash();
+        }
+
+        // StageLoader도 DontDestroyOnLoad라 중복 로드 방지 플래그가 남는다
+        if (StageLoader.Instance != null)
+        {
+            StageLoader.Instance.ResetLoader();
         }
 
         ResetGame();
